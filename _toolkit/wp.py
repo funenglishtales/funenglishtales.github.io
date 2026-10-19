@@ -401,7 +401,9 @@ def cmd_build(a):
         sys.exit("CONTENT_CHECK_FAIL:\n  " + "\n  ".join(probs))
     # giọng đọc
     tdir = os.path.join(work, "tts"); os.makedirs(tdir, exist_ok=True)
-    tts = TTS()
+    if a.skip_tts:
+        print("TTS: dùng lại file giọng đọc có sẵn trong %s" % tdir)
+    tts = None if a.skip_tts else TTS()
     import aligner
     flat = lambda x: re.sub(r"[^a-z]", "", x.lower())
 
@@ -451,7 +453,7 @@ def cmd_build(a):
         os.remove(tmp)
         return False
     issues = []
-    for i, v in enumerate(W):
+    for i, v in enumerate([] if a.skip_tts else W):
         c = C[v["word"]]
         w_txt = c["base"][:1].upper() + c["base"][1:] + "."
         ok, got = say_checked(w_txt, WORD_TRIES, os.path.join(tdir, "w%02d.mp3" % i), True)
@@ -565,6 +567,7 @@ if __name__ == "__main__":
     p.add_argument("--yt", default=""); p.add_argument("--thumb"); p.add_argument("--question", default="")
     p.add_argument("--work", required=True)
     p = sub.add_parser("build"); p.add_argument("--work", required=True); p.add_argument("--site")
+    p.add_argument("--skip-tts", action="store_true", help="dùng lại giọng đọc đã tạo (khi chỉ sửa giao diện hoặc thay vài file)")
     p = sub.add_parser("test"); p.add_argument("--site", required=True); p.add_argument("--ep", type=int, required=True)
     a = ap.parse_args()
     {"prepare": cmd_prepare, "build": cmd_build, "test": cmd_test}[a.cmd](a)
