@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#121F55">
+<meta name="description" content="Practise the 17 new words from Fun English Tales Episode 2 with the Thompson family&#x27;s own voices, real-life examples and a quick quiz.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A Surprise from Tokyo Word Practice · Fun English Tales">
+<meta property="og:description" content="Practise the 17 new words from Fun English Tales Episode 2 with the Thompson family&#x27;s own voices, real-life examples and a quick quiz.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>A Surprise from Tokyo Word Practice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: navy story-band header, then one reading column of word cards (picture tile + word + episode line + real-life lines), quiz, comment call. */
+:root{
+  --navy:#1B2F7A; --navy-deep:#121F55; --sun:#FFD21F; --sun-soft:#FFF3C2; --red:#D7262E;
+  --bg:#FBF8EF; --card:#FFFFFF; --ink:#1A1E33; --ink-2:#4D5372; --line:#E6E0CD; --mark:#FFE58A;
+  --good:#1D7A47; --good-soft:#E3F4EA; --bad:#B42318; --bad-soft:#FDECEA;
+  --sp-narrator:#1B2F7A; --sp-grandpa:#8A4B12; --sp-mom:#1D7A47; --sp-mia:#7B2FA3; --sp-leo:#C25B00;
+  --display:"Fredoka","Nunito","Segoe UI",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --navy:#9DB2FF; --navy-deep:#0E1640; --sun:#FFD84A; --sun-soft:#3A3315; --red:#FF7A7F;
+  --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; --mark:#6B5410;
+  --good:#5BD38F; --good-soft:#12301F; --bad:#FF8A80; --bad-soft:#3A1715;
+  --sp-narrator:#9DB2FF; --sp-grandpa:#E3A56A; --sp-mom:#5BD38F; --sp-mia:#D29BF2; --sp-leo:#FFA94D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --navy:#9DB2FF; --navy-deep:#0E1640; --sun:#FFD84A; --sun-soft:#3A3315; --red:#FF7A7F;
+  --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; --mark:#6B5410;
+  --good:#5BD38F; --good-soft:#12301F; --bad:#FF8A80; --bad-soft:#3A1715;
+  --sp-narrator:#9DB2FF; --sp-grandpa:#E3A56A; --sp-mom:#5BD38F; --sp-mia:#D29BF2; --sp-leo:#FFA94D; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+svg{width:18px;height:18px;fill:currentColor;flex:0 0 auto}
+
+/* header band (always navy, both themes) */
+.band{background:#121F55;color:#fff}
+.band .wrap{padding-block:18px 26px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#FFD21F;font-size:17px}
+.brand small{color:#C9D2F5;font-weight:600;font-size:14px}
+.eyebrow{margin:20px 0 6px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#C9D2F5}
+.band h1{font-size:clamp(30px,6vw,46px);color:#FFD21F}
+.band h1 span{display:block;color:#fff;font-size:.55em;margin-top:6px}
+.band p{margin:12px 0 0;max-width:62ch;color:#E6EAFA}
+
+/* episode + how-to */
+.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:-14px}
+.ep{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit}
+.ep .thumb{position:relative;aspect-ratio:16/9;max-width:100%;background:#121F55}
+.ep img{width:100%;height:100%;object-fit:cover;display:block}
+.ep .yt{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:44px;border-radius:12px;background:#E1251B;display:grid;place-items:center;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.ep .yt svg{width:24px;height:24px}
+.ep .cap{padding:12px 14px;font-weight:800;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.ep .cap span{color:var(--red);font-size:15px;white-space:nowrap}
+.how{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.how h2{font-size:20px;color:var(--navy);margin-bottom:8px}
+.how ol{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:s}
+.how li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;counter-increment:s}
+.how li::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--sun);color:#121F55;font-weight:800;display:grid;place-items:center;font-size:15px}
+.how b{color:var(--ink)}
+.how li{color:var(--ink-2)}
+
+/* index + progress */
+.index{margin:26px 0 8px}
+.index .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.index h2{font-size:22px;color:var(--navy)}
+.prog{font-weight:800;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.bar{height:10px;background:var(--line);border-radius:99px;margin:8px 0 12px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--good);border-radius:99px;transition:width .3s}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:15px;font-weight:700;text-decoration:none;color:var(--navy);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px 11px}
+.chip:hover{border-color:var(--navy)}
+.chip.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.chip.ok::before{content:"✓ "}
+
+/* word card */
+.cards{display:grid;gap:16px;margin:18px 0 8px}
+.card{display:grid;grid-template-columns:92px minmax(0,1fr);gap:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;scroll-margin-top:16px}
+.card.ok{border-color:var(--good)}
+.pic{width:92px;height:92px;border-radius:18px;background:var(--sun-soft);display:grid;place-items:center;font-size:38px;line-height:1;letter-spacing:-4px}
+.head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.num{font-size:13px;font-weight:800;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.head h3{font-size:30px;color:var(--red)}
+.say{width:36px;height:36px;border-radius:50%;border:2px solid var(--navy);background:transparent;color:var(--navy);display:grid;place-items:center;cursor:pointer}
+.say.on{background:var(--navy);color:var(--card)}
+.pos{font-size:14px;font-style:italic;color:var(--ink-2)}
+.form{font-size:14px;color:var(--ink-2)}
+.form b{color:var(--ink)}
+.def{margin:6px 0 12px;font-size:18px;font-weight:600}
+.movie{background:var(--sun-soft);border-radius:12px;padding:12px 14px}
+.mhead{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px}
+.tag{font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+.spk{font-weight:800;color:#fff;border-radius:99px;padding:1px 10px}
+.spk{background:var(--navy)} .sp-narrator{background:var(--sp-narrator)} .sp-grandpa{background:var(--sp-grandpa)} .sp-mom{background:var(--sp-mom)}
+.sp-mia{background:var(--sp-mia)} .sp-leo{background:var(--sp-leo)} .sp-dad{background:var(--sp-grandpa)} .sp-grandma{background:var(--sp-mom)} .sp-buddy{background:var(--sp-leo)}
+:root[data-theme="dark"] .spk{color:#11131C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .spk{color:#11131C}}
+.scene{color:var(--ink-2)}
+.line{font-size:21px;font-weight:700;margin:8px 0 10px;line-height:1.45}
+.tk{border-radius:5px;transition:color .08s}
+.line.going .tk{color:var(--ink-2)}
+.line.going .tk.past,.line.going .tk.now{color:var(--ink)}
+.tk.kw,mark.hl{background:var(--mark);color:inherit;border-radius:5px;padding:0 3px;font-weight:800}
+.tk.now{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:3px;text-underline-offset:4px}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.play{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:16px;background:var(--navy);color:var(--card);border:2px solid var(--navy);border-radius:10px;padding:7px 14px;cursor:pointer}
+.play.ghost{background:transparent;color:var(--navy)}
+.play.on{background:var(--red);border-color:var(--red);color:#fff}
+.play.sm{width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.tip{font-size:14px;color:var(--ink-2)}
+.life{margin-top:14px}
+.life h4{font-size:17px;color:var(--navy);margin-bottom:6px}
+.life ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.ex{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;align-items:start}
+.ex .en{margin:4px 0 2px;font-size:18px;font-weight:700}
+.ex .mean{margin:0;font-size:15px;color:var(--ink-2)}
+.ex .mean span{font-weight:800;color:var(--ink)}
+.done{display:inline-flex;gap:8px;align-items:center;margin-top:14px;font-weight:700;font-size:15px;color:var(--ink-2);cursor:pointer}
+.done input{width:20px;height:20px;accent-color:var(--good)}
+
+/* quiz */
+.quiz,.cta{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin:26px 0}
+.quiz h2,.cta h2{font-size:24px;color:var(--navy)}
+.quiz .sub,.cta p{color:var(--ink-2);margin:6px 0 14px}
+.qs{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:q}
+.qs li{counter-increment:q;border-top:1px solid var(--line);padding-top:12px}
+.qs .q{font-size:18px;font-weight:700;margin:0 0 8px}
+.qs .q::before{content:counter(q) ". ";color:var(--ink-2)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:2px solid var(--line);background:var(--bg);border-radius:10px;padding:6px 14px;font-weight:700;cursor:pointer}
+.opt:hover{border-color:var(--navy)}
+.opt.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.opt:disabled{cursor:default}
+.score{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;font-weight:800;font-size:18px}
+.score .play{font-size:15px}
+.cta{background:#121F55;border-color:#121F55;color:#fff}
+.cta h2{color:#FFD21F}
+.cta p{color:#D9DEF5}
+.cta .tpl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin:0 0 14px}
+.cta .tpl code{flex:1;min-width:0;font-family:var(--body);font-size:17px;font-weight:700;color:#fff;word-break:break-word}
+.cta .btns{display:flex;flex-wrap:wrap;gap:10px}
+.cta.mini{margin:20px 0 4px;padding:16px 18px}
+.cta.mini h2{font-size:20px}
+.cta.mini p{margin:4px 0 12px;font-size:16px}
+.cards .cta{margin:4px 0}
+.ipa{font-family:"Noto Sans","Segoe UI","Lucida Sans Unicode","DejaVu Sans",sans-serif;font-size:17px;color:var(--ink-2);letter-spacing:.01em}
+.cta a.btn,.cta button.btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;text-decoration:none;border-radius:10px;padding:9px 16px;border:2px solid #FFD21F;cursor:pointer}
+.cta a.btn{background:#FFD21F;color:#121F55}
+.cta button.btn{background:transparent;color:#FFD21F}
+.foot{color:var(--ink-2);font-size:14px;padding-block:8px 34px;text-align:center}
+
+@media (max-width:640px){
+  .top{grid-template-columns:minmax(0,1fr);margin-top:-10px}
+  .card{grid-template-columns:minmax(0,1fr);padding:16px}
+  .pic{width:64px;height:64px;font-size:28px;border-radius:14px}
+  .head h3{font-size:27px}
+  .line{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+</head>
+<body>
+<header class="band"><div class="wrap">
+  <div class="brand"><svg viewBox="0 0 48 48" width="34" height="34" style="width:34px;height:34px" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#FFD21F"/><path d="M10 34c4-2 9-3 14-1 5-2 10-1 14 1V15c-4-2-9-3-14-1-5-2-10-1-14 1z" fill="#fff" stroke="#121F55" stroke-width="2.4" stroke-linejoin="round"/><path d="M24 14v19" stroke="#121F55" stroke-width="2.4"/></svg>
+    <span>Fun English Tales<br><small>Learn English Through Real Family Stories</small></span></div>
+  <p class="eyebrow">Episode 2 · Slow English (A2) · 17 new words</p>
+  <h1>A Surprise from Tokyo<span>Word Practice</span></h1>
+  <p>Hear each new word in the Thompson family's own voices, then learn to use it in your everyday life.</p>
+</div></header>
+
+<main class="wrap">
+  <div class="top">
+    <a class="ep" href="https://youtu.be/g3lTXuTp0XY" target="_blank" rel="noopener">
+      <div class="thumb"><img src="img/thumb.jpg" alt="Episode 2: A Surprise from Tokyo"><span class="yt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></div>
+      <div class="cap">Watch Episode 2 first <span>Open on YouTube ↗</span></div>
+    </a>
+    <section class="how">
+      <h2>How to practise</h2>
+      <ol>
+        <li><span><b>Listen.</b> Press Listen to hear the line from the episode. Try Slow if it is fast.</span></li>
+        <li><span><b>Repeat.</b> Pause and say the line out loud, just like the character.</span></li>
+        <li><span><b>Use it.</b> Read the real-life examples, then write your own sentence in the YouTube comments.</span></li>
+      </ol>
+    </section>
+  </div>
+
+  <section class="cta mini" aria-label="Write a sentence in the comments"><h2>Use a word, share your sentence</h2><p>Learn a word below, then use it in a sentence about your own life and post it under the episode. We read them all!</p><div class="tpl"><code>My word is "_____": ______________________</code><button class="btn copy" type="button">Copy</button></div><div class="btns"><a class="btn" href="https://youtu.be/g3lTXuTp0XY" target="_blank" rel="noopener">Comment on YouTube ↗</a></div></section>
+
+  <section class="index" aria-labelledby="idx">
+    <div class="row"><h2 id="idx">Today's words</h2><span class="prog" id="prog">0 / 17 practised</span></div>
+    <div class="bar"><i id="bar"></i></div>
+    <nav class="chips" aria-label="Jump to a word"><a class="chip" href="#w00" data-w="w00">pen pal</a><a class="chip" href="#w01" data-w="w01">nervous</a><a class="chip" href="#w02" data-w="w02">mailbox</a><a class="chip" href="#w03" data-w="w03">package</a><a class="chip" href="#w04" data-w="w04">stamp</a><a class="chip" href="#w05" data-w="w05">curious</a><a class="chip" href="#w06" data-w="w06">delicious</a><a class="chip" href="#w07" data-w="w07">blank</a><a class="chip" href="#w08" data-w="w08">idea</a><a class="chip" href="#w09" data-w="w09">sneaky</a><a class="chip" href="#w10" data-w="w10">panic</a><a class="chip" href="#w11" data-w="w11">gentle</a><a class="chip" href="#w12" data-w="w12">message</a><a class="chip" href="#w13" data-w="w13">brave</a><a class="chip" href="#w14" data-w="w14">promise</a><a class="chip" href="#w15" data-w="w15">boring</a><a class="chip" href="#w16" data-w="w16">proud</a></nav>
+  </section>
+
+  <div class="cards">
+<article class="card" id="w00">
+  <div class="pic" aria-hidden="true">✉️🌏</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">01</span>
+      <h3>pen pal</h3>
+      <button class="say" type="button" data-a="w00" aria-label="Hear the word pen pal">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈpen pæl/</span>
+      <span class="pos">noun</span>
+    </header>
+    <p class="def">A friend you write letters to, even though they live far away.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 9</span></div>
+      <p class="line" data-line="m00"><span class="tk" data-s="0.04" data-e="0.55">A</span> <span class="tk kw" data-s="0.55" data-e="0.87">pen</span> <span class="tk kw" data-s="0.95" data-e="1.35">pal</span> <span class="tk" data-s="1.35" data-e="1.43">is</span> <span class="tk" data-s="1.43" data-e="1.59">a</span> <span class="tk" data-s="1.59" data-e="1.91">friend</span> <span class="tk" data-s="1.91" data-e="2.07">you</span> <span class="tk" data-s="2.07" data-e="2.31">write</span> <span class="tk" data-s="2.31" data-e="2.79">letters</span> <span class="tk" data-s="2.79" data-e="2.95">to,</span> <span class="tk" data-s="3.27" data-e="3.51">even</span> <span class="tk" data-s="3.51" data-e="3.67">when</span> <span class="tk" data-s="3.67" data-e="3.83">they</span> <span class="tk" data-s="3.83" data-e="4.15">live</span> <span class="tk" data-s="4.15" data-e="4.39">far,</span> <span class="tk" data-s="4.55" data-e="5.03">far</span> <span class="tk" data-s="5.03" data-e="5.67">away</span> <span class="tk" data-s="5.67" data-e="5.99">—</span> <span class="tk" data-s="5.99" data-e="6.23">and</span> <span class="tk" data-s="6.23" data-e="6.47">today,</span> <span class="tk" data-s="6.87" data-e="7.35">Leo</span> <span class="tk" data-s="7.35" data-e="7.51">was</span> <span class="tk" data-s="7.51" data-e="7.75">about</span> <span class="tk" data-s="7.75" data-e="7.91">to</span> <span class="tk" data-s="7.91" data-e="8.31">meet</span> <span class="tk" data-s="8.31" data-e="8.99">his.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m00"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m00" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e00_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">My <mark class="hl">pen pal</mark> lives in Brazil. We write every month.</p><p class="mean"><span>What it means:</span> A friend far away who I send letters to.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e00_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Do you have a <mark class="hl">pen pal</mark> in another country?</p><p class="mean"><span>What it means:</span> A friend abroad you write to.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w00" data-w="w00"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w01">
+  <div class="pic" aria-hidden="true">😬💓</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">02</span>
+      <h3>nervous</h3>
+      <button class="say" type="button" data-a="w01" aria-label="Hear the word nervous">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈnɜːrvəs/</span>
+      <span class="pos">adjective</span>
+    </header>
+    <p class="def">A little worried and excited at the same time.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 15</span></div>
+      <p class="line" data-line="m01"><span class="tk" data-s="0.04" data-e="0.50">Leo</span> <span class="tk" data-s="0.50" data-e="0.82">felt</span> <span class="tk kw" data-s="0.82" data-e="1.70">nervous.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m01"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m01" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e01_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I always feel <mark class="hl">nervous</mark> before a test.</p><p class="mean"><span>What it means:</span> I feel worried before a test.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e01_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">She was <mark class="hl">nervous</mark> on her first day at work.</p><p class="mean"><span>What it means:</span> She felt a little worried and excited.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w01" data-w="w01"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w02">
+  <div class="pic" aria-hidden="true">📮🏠</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">03</span>
+      <h3>mailbox</h3>
+      <button class="say" type="button" data-a="w02" aria-label="Hear the word mailbox">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈmeɪlbɑːks/</span>
+      <span class="pos">noun</span>
+    </header>
+    <p class="def">A box where letters and packages are delivered.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 19</span></div>
+      <p class="line" data-line="m02"><span class="tk" data-s="0.04" data-e="0.15">When</span> <span class="tk" data-s="0.15" data-e="0.71">Leo</span> <span class="tk" data-s="0.71" data-e="0.95">got</span> <span class="tk" data-s="0.95" data-e="1.43">home,</span> <span class="tk" data-s="1.91" data-e="2.23">something</span> <span class="tk" data-s="2.39" data-e="2.55">was</span> <span class="tk" data-s="2.55" data-e="3.19">waiting</span> <span class="tk" data-s="3.19" data-e="3.43">for</span> <span class="tk" data-s="3.43" data-e="3.75">him</span> <span class="tk" data-s="3.75" data-e="5.99">—</span> <span class="tk" data-s="5.99" data-e="6.23">right</span> <span class="tk" data-s="6.23" data-e="6.39">in</span> <span class="tk" data-s="6.39" data-e="6.55">the</span> <span class="tk kw" data-s="6.55" data-e="8.22">mailbox.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m02"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m02" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e02_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Can you check the <mark class="hl">mailbox</mark>? I&#x27;m waiting for a letter.</p><p class="mean"><span>What it means:</span> Look in the box where letters arrive.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e02_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">There was a birthday card in our <mark class="hl">mailbox</mark>.</p><p class="mean"><span>What it means:</span> The card came in the box for letters.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w02" data-w="w02"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w03">
+  <div class="pic" aria-hidden="true">📦🎀</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">04</span>
+      <h3>package</h3>
+      <button class="say" type="button" data-a="w03" aria-label="Hear the word package">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈpækɪdʒ/</span>
+      <span class="pos">noun</span>
+    </header>
+    <p class="def">Something wrapped up to be sent or given to someone.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 20</span></div>
+      <p class="line" data-line="m03"><span class="tk" data-s="0.04" data-e="0.40">A</span> <span class="tk" data-s="0.40" data-e="0.80">small</span> <span class="tk kw" data-s="0.80" data-e="1.44">package,</span> <span class="tk" data-s="1.60" data-e="2.16">wrapped</span> <span class="tk" data-s="2.16" data-e="2.32">in</span> <span class="tk" data-s="2.32" data-e="2.72">soft</span> <span class="tk" data-s="2.72" data-e="3.36">paper</span> <span class="tk" data-s="3.36" data-e="3.76">covered</span> <span class="tk" data-s="3.76" data-e="4.00">with</span> <span class="tk" data-s="4.00" data-e="4.48">tiny</span> <span class="tk" data-s="4.48" data-e="4.96">pink</span> <span class="tk" data-s="4.96" data-e="6.28">flowers.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m03"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m03" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e03_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">A <mark class="hl">package</mark> came for you this morning.</p><p class="mean"><span>What it means:</span> Something wrapped up was sent to you.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e03_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I sent a <mark class="hl">package</mark> to my grandma for her birthday.</p><p class="mean"><span>What it means:</span> I wrapped a gift and posted it to her.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w03" data-w="w03"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w04">
+  <div class="pic" aria-hidden="true">🏷️✉️</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">05</span>
+      <h3>stamp</h3>
+      <button class="say" type="button" data-a="w04" aria-label="Hear the word stamp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/stæmp/</span>
+      <span class="pos">noun</span>
+    </header>
+    <p class="def">A small sticker that shows a letter has traveled to you.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 22</span></div>
+      <p class="line" data-line="m04"><span class="tk" data-s="0.04" data-e="0.64">A</span> <span class="tk kw" data-s="0.64" data-e="1.20">stamp</span> <span class="tk" data-s="1.20" data-e="1.44">is</span> <span class="tk" data-s="1.44" data-e="1.60">a</span> <span class="tk" data-s="1.60" data-e="1.92">small</span> <span class="tk" data-s="1.92" data-e="2.72">sticker</span> <span class="tk" data-s="2.72" data-e="2.96">that</span> <span class="tk" data-s="2.96" data-e="3.28">shows</span> <span class="tk" data-s="3.28" data-e="3.44">a</span> <span class="tk" data-s="3.44" data-e="3.84">letter</span> <span class="tk" data-s="3.84" data-e="4.00">has</span> <span class="tk" data-s="4.00" data-e="4.64">traveled</span> <span class="tk" data-s="4.64" data-e="4.88">all</span> <span class="tk" data-s="4.88" data-e="5.12">the</span> <span class="tk" data-s="5.12" data-e="5.36">way</span> <span class="tk" data-s="5.36" data-e="5.68">to</span> <span class="tk" data-s="5.68" data-e="6.44">you.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m04"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m04" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e04_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Don&#x27;t forget to put a <mark class="hl">stamp</mark> on the letter.</p><p class="mean"><span>What it means:</span> The letter needs a stamp to be sent.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e04_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">My dad collects <mark class="hl">stamps</mark> from different countries.</p><p class="mean"><span>What it means:</span> He keeps stamps from around the world.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w04" data-w="w04"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w05">
+  <div class="pic" aria-hidden="true">🧐❓</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">06</span>
+      <h3>curious</h3>
+      <button class="say" type="button" data-a="w05" aria-label="Hear the word curious">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈkjʊriəs/</span>
+      <span class="pos">adjective</span>
+    </header>
+    <p class="def">Wanting to know more about something.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 28</span></div>
+      <p class="line" data-line="m05"><span class="tk" data-s="0.04" data-e="0.96">Everyone</span> <span class="tk" data-s="0.96" data-e="1.20">was</span> <span class="tk kw" data-s="1.20" data-e="1.92">curious.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m05"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m05" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e05_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Kids are <mark class="hl">curious</mark> about everything.</p><p class="mean"><span>What it means:</span> Children want to know about everything.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e05_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I&#x27;m <mark class="hl">curious</mark> — what&#x27;s inside the box?</p><p class="mean"><span>What it means:</span> I really want to know what&#x27;s in it.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w05" data-w="w05"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w06">
+  <div class="pic" aria-hidden="true">😋🍰</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">07</span>
+      <h3>delicious</h3>
+      <button class="say" type="button" data-a="w06" aria-label="Hear the word delicious">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/dɪˈlɪʃəs/</span>
+      <span class="pos">adjective</span>
+    </header>
+    <p class="def">Tasting very good.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-mom">Mom</span><span class="scene">Scene 32</span></div>
+      <p class="line" data-line="m06"><span class="tk" data-s="0.04" data-e="0.44">I&#x27;ve</span> <span class="tk" data-s="0.36" data-e="0.60">read</span> <span class="tk" data-s="0.60" data-e="0.92">about</span> <span class="tk" data-s="0.92" data-e="1.16">these</span> <span class="tk" data-s="1.16" data-e="1.64">—</span> <span class="tk" data-s="1.64" data-e="1.96">they&#x27;re</span> <span class="tk" data-s="1.88" data-e="2.04">a</span> <span class="tk" data-s="2.04" data-e="2.28">little</span> <span class="tk" data-s="2.28" data-e="2.92">chewy</span> <span class="tk" data-s="3.08" data-e="3.40">and</span> <span class="tk" data-s="3.40" data-e="3.72">very</span> <span class="tk kw" data-s="3.72" data-e="5.04">delicious.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m06"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m06" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e06_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">This cake is <mark class="hl">delicious</mark>! Can I have more?</p><p class="mean"><span>What it means:</span> This cake tastes very good.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e06_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">My mom makes <mark class="hl">delicious</mark> soup.</p><p class="mean"><span>What it means:</span> Her soup tastes really good.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w06" data-w="w06"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w07">
+  <div class="pic" aria-hidden="true">📄⬜</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">08</span>
+      <h3>blank</h3>
+      <button class="say" type="button" data-a="w07" aria-label="Hear the word blank">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/blæŋk/</span>
+      <span class="pos">adjective</span>
+    </header>
+    <p class="def">Having nothing written or drawn on it yet.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 46</span></div>
+      <p class="line" data-line="m07"><span class="tk" data-s="0.04" data-e="0.11">A</span> <span class="tk kw" data-s="0.11" data-e="0.59">blank</span> <span class="tk" data-s="0.59" data-e="0.99">page</span> <span class="tk" data-s="0.99" data-e="1.31">means</span> <span class="tk" data-s="1.31" data-e="1.63">nothing</span> <span class="tk" data-s="1.63" data-e="1.79">is</span> <span class="tk" data-s="1.79" data-e="2.11">written</span> <span class="tk" data-s="2.11" data-e="2.35">on</span> <span class="tk" data-s="2.35" data-e="2.51">it</span> <span class="tk" data-s="2.51" data-e="2.99">yet</span> <span class="tk" data-s="2.99" data-e="3.63">—</span> <span class="tk" data-s="3.63" data-e="3.79">and</span> <span class="tk" data-s="3.79" data-e="4.11">right</span> <span class="tk" data-s="4.11" data-e="4.35">now,</span> <span class="tk" data-s="4.76" data-e="4.83">it</span> <span class="tk" data-s="4.83" data-e="5.15">felt</span> <span class="tk" data-s="5.15" data-e="5.79">impossible</span> <span class="tk" data-s="5.79" data-e="6.03">to</span> <span class="tk" data-s="6.03" data-e="7.05">fill.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m07"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m07" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e07_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Write your name on the <mark class="hl">blank</mark> line.</p><p class="mean"><span>What it means:</span> Write it on the empty line.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e07_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I stared at the <mark class="hl">blank</mark> screen. I didn&#x27;t know what to write.</p><p class="mean"><span>What it means:</span> There was nothing on the screen yet.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w07" data-w="w07"> I can use this word</label>
+  </div>
+</article>
+<section class="cta mini" aria-label="Write a sentence in the comments"><h2>Halfway there! Try one word now</h2><p>Pick a word you just practised and write your own sentence in the YouTube comments.</p><div class="tpl"><code>My word is "_____": ______________________</code><button class="btn copy" type="button">Copy</button></div><div class="btns"><a class="btn" href="https://youtu.be/g3lTXuTp0XY" target="_blank" rel="noopener">Comment on YouTube ↗</a></div></section>
+<article class="card" id="w08">
+  <div class="pic" aria-hidden="true">💡✨</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">09</span>
+      <h3>idea</h3>
+      <button class="say" type="button" data-a="w08" aria-label="Hear the word idea">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/aɪˈdiːə/</span>
+      <span class="pos">noun</span>
+    </header>
+    <p class="def">A new thought that suddenly makes things clear.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 54</span></div>
+      <p class="line" data-line="m08"><span class="tk" data-s="0.04" data-e="0.64">An</span> <span class="tk kw" data-s="0.64" data-e="1.12">idea</span> <span class="tk" data-s="1.12" data-e="1.36">is</span> <span class="tk" data-s="1.52" data-e="1.68">a</span> <span class="tk" data-s="1.68" data-e="2.00">new</span> <span class="tk" data-s="2.00" data-e="2.32">thought</span> <span class="tk" data-s="2.56" data-e="2.88">that</span> <span class="tk" data-s="2.88" data-e="3.44">suddenly</span> <span class="tk" data-s="3.44" data-e="3.92">makes</span> <span class="tk" data-s="4.40" data-e="4.64">everything</span> <span class="tk" data-s="4.96" data-e="6.20">clear.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m08"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m08" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e08_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I have an <mark class="hl">idea</mark>! Let&#x27;s have a picnic.</p><p class="mean"><span>What it means:</span> I just thought of something good to do.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e08_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">That&#x27;s a great <mark class="hl">idea</mark>. Let&#x27;s do it!</p><p class="mean"><span>What it means:</span> That plan is very good.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w08" data-w="w08"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w09">
+  <div class="pic" aria-hidden="true">🦊🤫</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">10</span>
+      <h3>sneaky</h3>
+      <button class="say" type="button" data-a="w09" aria-label="Hear the word sneaky">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈsniːki/</span>
+      <span class="pos">adjective</span>
+    </header>
+    <p class="def">Doing something secretly so no one notices.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 60</span></div>
+      <p class="line" data-line="m09"><span class="tk" data-s="0.04" data-e="0.58">He</span> <span class="tk" data-s="0.58" data-e="0.90">was</span> <span class="tk" data-s="0.90" data-e="1.22">being</span> <span class="tk" data-s="1.22" data-e="1.27">very,</span> <span class="tk" data-s="1.24" data-e="1.54">very</span> <span class="tk kw" data-s="1.54" data-e="3.06">sneaky.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m09"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m09" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e09_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">My little brother is <mark class="hl">sneaky</mark>. He ate my chocolate when I wasn&#x27;t looking.</p><p class="mean"><span>What it means:</span> He did it secretly so I didn&#x27;t see.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e09_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">The cat took a <mark class="hl">sneaky</mark> bite of my sandwich.</p><p class="mean"><span>What it means:</span> The cat took it quietly when no one looked.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w09" data-w="w09"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w10">
+  <div class="pic" aria-hidden="true">😱💥</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">11</span>
+      <h3>panic</h3>
+      <button class="say" type="button" data-a="w10" aria-label="Hear the word panic">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈpænɪk/</span>
+      <span class="pos">noun</span>
+    </header>
+    <p class="def">A sudden rush of fear.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 72</span></div>
+      <p class="line" data-line="m10"><span class="tk" data-s="0.04" data-e="0.43">Leo</span> <span class="tk" data-s="0.43" data-e="0.67">felt</span> <span class="tk kw" data-s="0.67" data-e="1.15">panic</span> <span class="tk" data-s="1.15" data-e="1.47">rise</span> <span class="tk" data-s="1.47" data-e="1.71">in</span> <span class="tk" data-s="1.71" data-e="1.95">his</span> <span class="tk" data-s="1.95" data-e="2.43">chest</span> <span class="tk" data-s="2.84" data-e="3.79">—</span> <span class="tk kw" data-s="3.79" data-e="4.35">panic</span> <span class="tk" data-s="4.35" data-e="4.67">means</span> <span class="tk" data-s="4.67" data-e="4.83">a</span> <span class="tk" data-s="4.83" data-e="5.23">sudden</span> <span class="tk" data-s="5.23" data-e="5.63">rush</span> <span class="tk" data-s="5.63" data-e="5.87">of</span> <span class="tk" data-s="5.87" data-e="6.95">fear.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m10"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m10" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e10_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Don&#x27;t <mark class="hl">panic</mark> — we still have time to catch the train.</p><p class="mean"><span>What it means:</span> Don&#x27;t be suddenly scared.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e10_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I felt <mark class="hl">panic</mark> when I couldn&#x27;t find my passport.</p><p class="mean"><span>What it means:</span> I suddenly felt very afraid.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w10" data-w="w10"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w11">
+  <div class="pic" aria-hidden="true">🤲🐣</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">12</span>
+      <h3>gentle</h3>
+      <button class="say" type="button" data-a="w11" aria-label="Hear the word gentle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈdʒentl/</span>
+      <span class="pos">adjective</span><span class="form">in the episode: <b>gently</b></span>
+    </header>
+    <p class="def">Soft and kind, not rough.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 76</span></div>
+      <p class="line" data-line="m11"><span class="tk" data-s="0.04" data-e="0.84">Leo</span> <span class="tk" data-s="0.84" data-e="1.32">knelt</span> <span class="tk" data-s="1.32" data-e="1.56">down</span> <span class="tk" data-s="1.56" data-e="2.44">slowly</span> <span class="tk" data-s="3.40" data-e="3.64">and</span> <span class="tk kw" data-s="3.64" data-e="4.20">gently</span> <span class="tk" data-s="4.20" data-e="4.52">held</span> <span class="tk" data-s="4.52" data-e="4.84">out</span> <span class="tk" data-s="4.84" data-e="5.16">his</span> <span class="tk" data-s="5.16" data-e="6.24">hand.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m11"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m11" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e11_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Be <mark class="hl">gentle</mark> with the baby kitten.</p><p class="mean"><span>What it means:</span> Touch it softly and kindly.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e11_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">She <mark class="hl">gently</mark> closed the door so the baby could sleep.</p><p class="mean"><span>What it means:</span> She closed it softly and quietly.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w11" data-w="w11"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w12">
+  <div class="pic" aria-hidden="true">💬📱</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">13</span>
+      <h3>message</h3>
+      <button class="say" type="button" data-a="w12" aria-label="Hear the word message">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈmesɪdʒ/</span>
+      <span class="pos">noun</span>
+    </header>
+    <p class="def">Something you send to share your thoughts with someone else.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 84</span></div>
+      <p class="line" data-line="m12"><span class="tk" data-s="0.04" data-e="0.64">A</span> <span class="tk kw" data-s="0.64" data-e="1.20">message</span> <span class="tk" data-s="1.20" data-e="1.44">is</span> <span class="tk" data-s="1.44" data-e="2.00">anything</span> <span class="tk" data-s="2.00" data-e="2.24">you</span> <span class="tk" data-s="2.24" data-e="2.56">send</span> <span class="tk" data-s="2.56" data-e="2.72">to</span> <span class="tk" data-s="2.72" data-e="3.04">share</span> <span class="tk" data-s="3.04" data-e="3.20">your</span> <span class="tk" data-s="3.20" data-e="3.60">thoughts</span> <span class="tk" data-s="3.60" data-e="3.76">with</span> <span class="tk" data-s="3.76" data-e="4.32">someone</span> <span class="tk" data-s="4.32" data-e="4.88">else</span> <span class="tk" data-s="4.88" data-e="5.20">—</span> <span class="tk" data-s="5.20" data-e="5.36">and</span> <span class="tk" data-s="5.36" data-e="5.60">this</span> <span class="tk" data-s="5.60" data-e="5.92">one</span> <span class="tk" data-s="5.92" data-e="6.64">felt</span> <span class="tk" data-s="6.64" data-e="6.96">just</span> <span class="tk" data-s="6.96" data-e="7.73">right.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m12"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m12" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e12_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I sent you a <mark class="hl">message</mark>. Did you get it?</p><p class="mean"><span>What it means:</span> I sent you some words on the phone.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e12_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Can I leave a <mark class="hl">message</mark> for your mom?</p><p class="mean"><span>What it means:</span> Can I give you words to tell her?</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w12" data-w="w12"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w13">
+  <div class="pic" aria-hidden="true">🦁💪</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">14</span>
+      <h3>brave</h3>
+      <button class="say" type="button" data-a="w13" aria-label="Hear the word brave">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/breɪv/</span>
+      <span class="pos">adjective</span>
+    </header>
+    <p class="def">Not afraid to do something difficult.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-dad">Dad</span><span class="scene">Scene 88</span></div>
+      <p class="line" data-line="m13"><span class="tk" data-s="0.04" data-e="0.27">That&#x27;s</span> <span class="tk" data-s="0.27" data-e="0.51">one</span> <span class="tk kw" data-s="0.51" data-e="0.91">brave</span> <span class="tk" data-s="0.91" data-e="1.15">first</span> <span class="tk" data-s="1.15" data-e="1.47">letter,</span> <span class="tk" data-s="1.55" data-e="2.51">buddy.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m13"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m13" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e13_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">It was <mark class="hl">brave</mark> of you to tell the truth.</p><p class="mean"><span>What it means:</span> You weren&#x27;t afraid to say it.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e13_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">The <mark class="hl">brave</mark> firefighter saved the family.</p><p class="mean"><span>What it means:</span> He wasn&#x27;t afraid of the danger.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w13" data-w="w13"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w14">
+  <div class="pic" aria-hidden="true">🤞🤝</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">15</span>
+      <h3>promise</h3>
+      <button class="say" type="button" data-a="w14" aria-label="Hear the word promise">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈprɑːmɪs/</span>
+      <span class="pos">noun</span>
+    </header>
+    <p class="def">Something you say you will definitely do.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 94</span></div>
+      <p class="line" data-line="m14"><span class="tk" data-s="0.04" data-e="0.95">Leo</span> <span class="tk" data-s="0.95" data-e="1.11">made</span> <span class="tk" data-s="1.11" data-e="1.27">a</span> <span class="tk kw" data-s="1.27" data-e="1.75">promise</span> <span class="tk" data-s="1.75" data-e="1.99">to</span> <span class="tk" data-s="1.99" data-e="2.47">himself</span> <span class="tk" data-s="2.47" data-e="2.79">—</span> <span class="tk" data-s="2.79" data-e="3.03">he</span> <span class="tk" data-s="3.03" data-e="3.19">would</span> <span class="tk" data-s="3.19" data-e="3.43">not</span> <span class="tk" data-s="3.43" data-e="3.59">be</span> <span class="tk" data-s="3.59" data-e="4.23">nervous</span> <span class="tk" data-s="4.23" data-e="4.55">this</span> <span class="tk" data-s="4.55" data-e="5.32">time.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m14"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m14" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e14_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I made a <mark class="hl">promise</mark> to call my mom every Sunday.</p><p class="mean"><span>What it means:</span> I said I will surely call her.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e14_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Don&#x27;t break your <mark class="hl">promise</mark>!</p><p class="mean"><span>What it means:</span> Do what you said you would do.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w14" data-w="w14"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w15">
+  <div class="pic" aria-hidden="true">🥱😴</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">16</span>
+      <h3>boring</h3>
+      <button class="say" type="button" data-a="w15" aria-label="Hear the word boring">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈbɔːrɪŋ/</span>
+      <span class="pos">adjective</span>
+    </header>
+    <p class="def">Not interesting at all.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-leo">Leo</span><span class="scene">Scene 105</span></div>
+      <p class="line" data-line="m15"><span class="tk" data-s="0.04" data-e="0.14">I</span> <span class="tk" data-s="0.14" data-e="0.46">always</span> <span class="tk" data-s="0.46" data-e="0.78">thought</span> <span class="tk" data-s="0.78" data-e="1.02">my</span> <span class="tk" data-s="1.02" data-e="1.26">life</span> <span class="tk" data-s="1.26" data-e="1.50">was</span> <span class="tk" data-s="1.50" data-e="1.66">kind</span> <span class="tk" data-s="1.66" data-e="1.82">of</span> <span class="tk kw" data-s="1.82" data-e="3.14">boring.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m15"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m15" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e15_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">This movie is so <mark class="hl">boring</mark>. I want to sleep.</p><p class="mean"><span>What it means:</span> The movie is not interesting at all.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e15_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">Waiting in line is <mark class="hl">boring</mark>.</p><p class="mean"><span>What it means:</span> Waiting is not fun or interesting.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w15" data-w="w15"> I can use this word</label>
+  </div>
+</article>
+<article class="card" id="w16">
+  <div class="pic" aria-hidden="true">🏅😊</div>
+  <div class="body">
+    <header class="head">
+      <span class="num">17</span>
+      <h3>proud</h3>
+      <button class="say" type="button" data-a="w16" aria-label="Hear the word proud">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/praʊd/</span>
+      <span class="pos">adjective</span>
+    </header>
+    <p class="def">Happy about something you did well.</p>
+    <section class="movie">
+      <div class="mhead"><span class="tag">From the episode</span><span class="spk sp-narrator">Narrator</span><span class="scene">Scene 107</span></div>
+      <p class="line" data-line="m16"><span class="tk" data-s="0.04" data-e="0.96">Leo</span> <span class="tk" data-s="0.96" data-e="1.36">felt</span> <span class="tk kw" data-s="1.36" data-e="2.08">proud.</span></p>
+      <div class="ctl">
+        <button class="play" type="button" data-a="m16"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
+        <button class="play ghost" type="button" data-a="m16" data-rate="0.75"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Slow</button>
+        <span class="tip">Then pause and say it out loud.</span>
+      </div>
+    </section>
+    <section class="life">
+      <h4>Use it in real life</h4>
+      <ul><li class="ex"><button class="play sm" type="button" data-a="e16_0" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">I&#x27;m so <mark class="hl">proud</mark> of you for finishing the race!</p><p class="mean"><span>What it means:</span> I&#x27;m happy because you did well.</p></div></li><li class="ex"><button class="play sm" type="button" data-a="e16_1" aria-label="Listen to this sentence"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button><div><p class="en">He felt <mark class="hl">proud</mark> of his first cake.</p><p class="mean"><span>What it means:</span> He was happy he made it well.</p></div></li></ul>
+    </section>
+    <label class="done"><input type="checkbox" id="done-w16" data-w="w16"> I can use this word</label>
+  </div>
+</article></div>
+
+  <section class="quiz" aria-labelledby="qz">
+    <h2 id="qz">Quick check</h2>
+    <p class="sub">Choose the word that fits each sentence.</p>
+    <ol class="qs" id="qs"></ol>
+    <div class="score"><span id="score"></span><button class="play" type="button" id="newq">New questions</button></div>
+  </section>
+
+  <section class="cta" aria-label="Write a sentence in the comments"><h2>Your turn: write a sentence</h2><p>Pick one word from today and use it in a sentence about your own life. Post it in the comments under the episode. We read them all!</p><div class="tpl"><code>My word is "_____": ______________________</code><button class="btn copy" type="button">Copy</button></div><div class="btns"><a class="btn" href="https://youtu.be/g3lTXuTp0XY" target="_blank" rel="noopener">Comment on YouTube ↗</a></div></section>
+  <p class="foot"><a href="../" style="color:inherit;font-weight:800">← All episodes</a><br>Fun English Tales · Episode 2 · A Surprise from Tokyo</p>
+</main>
+
+<script>
+const AUD={"w00": "audio/w00.json", "m00": "audio/w00.json", "e00_0": "audio/w00.json", "e00_1": "audio/w00.json", "w01": "audio/w01.json", "m01": "audio/w01.json", "e01_0": "audio/w01.json", "e01_1": "audio/w01.json", "w02": "audio/w02.json", "m02": "audio/w02.json", "e02_0": "audio/w02.json", "e02_1": "audio/w02.json", "w03": "audio/w03.json", "m03": "audio/w03.json", "e03_0": "audio/w03.json", "e03_1": "audio/w03.json", "w04": "audio/w04.json", "m04": "audio/w04.json", "e04_0": "audio/w04.json", "e04_1": "audio/w04.json", "w05": "audio/w05.json", "m05": "audio/w05.json", "e05_0": "audio/w05.json", "e05_1": "audio/w05.json", "w06": "audio/w06.json", "m06": "audio/w06.json", "e06_0": "audio/w06.json", "e06_1": "audio/w06.json", "w07": "audio/w07.json", "m07": "audio/w07.json", "e07_0": "audio/w07.json", "e07_1": "audio/w07.json", "w08": "audio/w08.json", "m08": "audio/w08.json", "e08_0": "audio/w08.json", "e08_1": "audio/w08.json", "w09": "audio/w09.json", "m09": "audio/w09.json", "e09_0": "audio/w09.json", "e09_1": "audio/w09.json", "w10": "audio/w10.json", "m10": "audio/w10.json", "e10_0": "audio/w10.json", "e10_1": "audio/w10.json", "w11": "audio/w11.json", "m11": "audio/w11.json", "e11_0": "audio/w11.json", "e11_1": "audio/w11.json", "w12": "audio/w12.json", "m12": "audio/w12.json", "e12_0": "audio/w12.json", "e12_1": "audio/w12.json", "w13": "audio/w13.json", "m13": "audio/w13.json", "e13_0": "audio/w13.json", "e13_1": "audio/w13.json", "w14": "audio/w14.json", "m14": "audio/w14.json", "e14_0": "audio/w14.json", "e14_1": "audio/w14.json", "w15": "audio/w15.json", "m15": "audio/w15.json", "e15_0": "audio/w15.json", "e15_1": "audio/w15.json", "w16": "audio/w16.json", "m16": "audio/w16.json", "e16_0": "audio/w16.json", "e16_1": "audio/w16.json"};
+const QUIZ=[{"q": "My _____ lives in Brazil. We write every month.", "a": "pen pal", "w": 0}, {"q": "Do you have a _____ in another country?", "a": "pen pal", "w": 0}, {"q": "I always feel _____ before a test.", "a": "nervous", "w": 1}, {"q": "She was _____ on her first day at work.", "a": "nervous", "w": 1}, {"q": "Can you check the _____? I'm waiting for a letter.", "a": "mailbox", "w": 2}, {"q": "There was a birthday card in our _____.", "a": "mailbox", "w": 2}, {"q": "A _____ came for you this morning.", "a": "package", "w": 3}, {"q": "I sent a _____ to my grandma for her birthday.", "a": "package", "w": 3}, {"q": "Don't forget to put a _____ on the letter.", "a": "stamp", "w": 4}, {"q": "My dad collects _____ from different countries.", "a": "stamps", "w": 4}, {"q": "Kids are _____ about everything.", "a": "curious", "w": 5}, {"q": "I'm _____ — what's inside the box?", "a": "curious", "w": 5}, {"q": "This cake is _____! Can I have more?", "a": "delicious", "w": 6}, {"q": "My mom makes _____ soup.", "a": "delicious", "w": 6}, {"q": "Write your name on the _____ line.", "a": "blank", "w": 7}, {"q": "I stared at the _____ screen. I didn't know what to write.", "a": "blank", "w": 7}, {"q": "I have an _____! Let's have a picnic.", "a": "idea", "w": 8}, {"q": "That's a great _____. Let's do it!", "a": "idea", "w": 8}, {"q": "My little brother is _____. He ate my chocolate when I wasn't looking.", "a": "sneaky", "w": 9}, {"q": "The cat took a _____ bite of my sandwich.", "a": "sneaky", "w": 9}, {"q": "Don't _____ — we still have time to catch the train.", "a": "panic", "w": 10}, {"q": "I felt _____ when I couldn't find my passport.", "a": "panic", "w": 10}, {"q": "Be _____ with the baby kitten.", "a": "gentle", "w": 11}, {"q": "She _____ closed the door so the baby could sleep.", "a": "gently", "w": 11}, {"q": "I sent you a _____. Did you get it?", "a": "message", "w": 12}, {"q": "Can I leave a _____ for your mom?", "a": "message", "w": 12}, {"q": "It was _____ of you to tell the truth.", "a": "brave", "w": 13}, {"q": "The _____ firefighter saved the family.", "a": "brave", "w": 13}, {"q": "I made a _____ to call my mom every Sunday.", "a": "promise", "w": 14}, {"q": "Don't break your _____!", "a": "promise", "w": 14}, {"q": "This movie is so _____. I want to sleep.", "a": "boring", "w": 15}, {"q": "Waiting in line is _____.", "a": "boring", "w": 15}, {"q": "I'm so _____ of you for finishing the race!", "a": "proud", "w": 16}, {"q": "He felt _____ of his first cake.", "a": "proud", "w": 16}];
+const A=new Audio();A.preload='auto';A.setAttribute('playsinline','');
+/* audio as Blob URLs: reliable on iPhone/iPad Safari and Android Chrome */
+const BLOB={};function blobUrl(k){if(/\.mp3$/.test(AUD[k]))return AUD[k];if(!BLOB[k]){const bin=atob(AUD[k]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);BLOB[k]=URL.createObjectURL(new Blob([u],{type:'audio/mpeg'}));}return BLOB[k];}
+let curBtn=null,curLine=null,raf=0;
+function stopAll(){A.pause();if(curBtn)curBtn.classList.remove('on');if(curLine){curLine.classList.remove('going');curLine.querySelectorAll('.tk').forEach(t=>t.classList.remove('now','past'));}curBtn=null;curLine=null;cancelAnimationFrame(raf);}
+function tick(){if(!curLine)return;const t=A.currentTime;curLine.querySelectorAll('.tk').forEach(el=>{const s=+el.dataset.s,e=+el.dataset.e;el.classList.toggle('now',t>=s&&t<e);el.classList.toggle('past',t>=e);});raf=requestAnimationFrame(tick);}
+/* website mode: each word's audio sits in one small file, fetched ahead of time */
+const PACK={},PACKP={};
+function needsPack(k){return /\.json$/.test(AUD[k]||'');}
+function loadPack(u){if(!PACKP[u])PACKP[u]=fetch(u).then(r=>r.json()).then(d=>{Object.assign(PACK,d);return d;});return PACKP[u];}
+function srcFor(k){if(needsPack(k)){if(!PACK[k])return null;const bin=atob(PACK[k]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return BLOB[k]||(BLOB[k]=URL.createObjectURL(new Blob([u],{type:'audio/mpeg'})));}return blobUrl(k);}
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){const b=en.target.querySelector('[data-a]');if(b&&needsPack(b.dataset.a))loadPack(AUD[b.dataset.a]);io.unobserve(en.target);}}),{rootMargin:'600px'});document.querySelectorAll('.card').forEach(c=>io.observe(c));}
+const SILENT='data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQxAADB8AhSmxhIIEVCSiJrDCQBTcu3UrAIwUdkRgQbFAZC1CQEwTJ9mjRvBA4UOLD8nKVOWfh+UlK3z/177OXrfOdKl7pyn3Xf//WreyTRUoAWgBgkOAGbZHBgG1OF6zM82DWbZaUmMBptgQhGjsyYqc9ae9XFz280948NMBWInljyzsNRFLPWdnZGWrddDsjK1unuSrVN9jJsK8KuQtQCtMBjCEtImISdNKJOopIpBFpNSMbIHCSRpRR5iakjTiyzLhchUUBwCgyKiweBv/7UsQbg8isVNoMPMjAAAA0gAAABEVFGmgqK////9bP/6XCykxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
+function startPlay(b,k,rate){
+  const src=srcFor(k);
+  if(!src){A.src=SILENT;A.play().catch(()=>{});loadPack(AUD[k]).then(()=>{if(curBtn===b)startPlay(b,k,rate);}).catch(()=>stopAll());return;}
+  A.src=src;A.load();A.playbackRate=rate;A.defaultPlaybackRate=rate;
+  A.play().then(()=>{A.playbackRate=rate;raf=requestAnimationFrame(tick);}).catch(()=>stopAll());
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const same=curBtn===b&&!A.paused;stopAll();if(same)return;
+  const k=b.dataset.a,rate=+(b.dataset.rate||1);
+  curBtn=b;b.classList.add('on');
+  const ln=document.querySelector('[data-line="'+k+'"]');
+  if(ln&&ln.querySelector('.tk')){curLine=ln;ln.classList.add('going');}
+  startPlay(b,k,rate);
+});
+A.addEventListener('ended',()=>{if(A.src!==SILENT)stopAll();});
+
+/* practised words (per-viewer convenience only) */
+const N=document.querySelectorAll('.card').length;
+let done={};try{done=JSON.parse(localStorage.getItem('fet-done-2')||'{}')}catch(e){}
+function paint(){let c=0;document.querySelectorAll('.done input').forEach(i=>{const w=i.dataset.w,on=!!done[w];i.checked=on;if(on)c++;
+  document.getElementById(w).classList.toggle('ok',on);const ch=document.querySelector('.chip[data-w="'+w+'"]');if(ch)ch.classList.toggle('ok',on);});
+  document.getElementById('prog').textContent=c+' / '+N+' practised';document.getElementById('bar').style.width=(c/N*100)+'%';}
+document.addEventListener('change',e=>{const i=e.target.closest('.done input');if(!i)return;done[i.dataset.w]=i.checked;
+  try{localStorage.setItem('fet-done-2',JSON.stringify(done))}catch(e){}paint();});
+paint();
+
+/* quiz */
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let right=0,answered=0,total=0;
+function makeQuiz(){
+  const used=new Set(),pick=[];
+  for(const q of shuffle(QUIZ)){if(used.has(q.w))continue;used.add(q.w);pick.push(q);if(pick.length===10)break;}
+  total=pick.length;right=0;answered=0;
+  document.getElementById('qs').innerHTML=pick.map((q,n)=>{
+    const others=shuffle([...new Set(QUIZ.filter(x=>x.w!==q.w).map(x=>x.a.toLowerCase()))]).filter(x=>x!==q.a.toLowerCase()).slice(0,3);
+    const opts=shuffle([q.a.toLowerCase(),...others]);
+    return '<li><p class="q">'+esc(q.q)+'</p><div class="opts" data-ans="'+esc(q.a.toLowerCase())+'">'+opts.map(o=>'<button class="opt" type="button">'+esc(o)+'</button>').join('')+'</div></li>';}).join('');
+  score();}
+function score(){document.getElementById('score').textContent=answered?('Score: '+right+' / '+total+(answered===total?(right===total?' · Perfect!':right>=7?' · Great job!':' · Try the words again, then New questions.'):'')):'Score: 0 / '+total;}
+document.getElementById('qs').addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;const box=b.parentElement;if(box.dataset.done)return;
+  box.dataset.done=1;answered++;const ok=b.textContent===box.dataset.ans;if(ok)right++;
+  box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.textContent===box.dataset.ans)o.classList.add('right');});if(!ok)b.classList.add('wrong');score();});
+document.getElementById('newq').onclick=makeQuiz;makeQuiz();
+
+/* copy comment template (every "Your turn" box) */
+document.addEventListener('click',e=>{const btn=e.target.closest('.cta .copy');if(!btn)return;
+  const code=btn.parentElement.querySelector('code'),t=code.textContent;
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(code);const s=getSelection();s.removeAllRanges();s.addRange(r);};
+  const ok=()=>{btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy',1600);};
+  try{navigator.clipboard.writeText(t).then(ok,sel);}catch(err){sel();}});
+</script>
+
+</body>
+</html>
