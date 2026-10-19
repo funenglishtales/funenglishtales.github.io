@@ -137,6 +137,11 @@ svg{width:18px;height:18px;fill:currentColor;flex:0 0 auto}
 .cta .tpl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin:0 0 14px}
 .cta .tpl code{flex:1;min-width:0;font-family:var(--body);font-size:17px;font-weight:700;color:#fff;word-break:break-word}
 .cta .btns{display:flex;flex-wrap:wrap;gap:10px}
+.cta.mini{margin:20px 0 4px;padding:16px 18px}
+.cta.mini h2{font-size:20px}
+.cta.mini p{margin:4px 0 12px;font-size:16px}
+.cards .cta{margin:4px 0}
+.ipa{font-family:"Noto Sans","Segoe UI","Lucida Sans Unicode","DejaVu Sans",sans-serif;font-size:17px;color:var(--ink-2);letter-spacing:.01em}
 .cta a.btn,.cta button.btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;text-decoration:none;border-radius:10px;padding:9px 16px;border:2px solid #FFD21F;cursor:pointer}
 .cta a.btn{background:#FFD21F;color:#121F55}
 .cta button.btn{background:transparent;color:#FFD21F}
@@ -177,6 +182,8 @@ html{scroll-behavior:smooth}
     </section>
   </div>
 
+  __CTA_TOP__
+
   <section class="index" aria-labelledby="idx">
     <div class="row"><h2 id="idx">Today's words</h2><span class="prog" id="prog">0 / __N__ practised</span></div>
     <div class="bar"><i id="bar"></i></div>
@@ -192,12 +199,7 @@ html{scroll-behavior:smooth}
     <div class="score"><span id="score"></span><button class="play" type="button" id="newq">New questions</button></div>
   </section>
 
-  <section class="cta" aria-labelledby="ct">
-    <h2 id="ct">Your turn: write a sentence</h2>
-    <p>Pick one word from today and use it in a sentence about your own life. Post it in the comments under the episode. We read them all!</p>
-    <div class="tpl"><code id="tpl">My word is "_____": ______________________</code><button class="btn" type="button" id="copy">Copy</button></div>
-    <div class="btns"><a class="btn" href="__YT__" target="_blank" rel="noopener">Comment on YouTube ↗</a></div>
-  </section>
+  __CTA_END__
   <p class="foot">Fun English Tales · Episode __EP__ · __TITLE__</p>
 </main>
 
@@ -263,9 +265,10 @@ document.getElementById('qs').addEventListener('click',e=>{const b=e.target.clos
   box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.textContent===box.dataset.ans)o.classList.add('right');});if(!ok)b.classList.add('wrong');score();});
 document.getElementById('newq').onclick=makeQuiz;makeQuiz();
 
-/* copy comment template */
-document.getElementById('copy').onclick=function(){const t=document.getElementById('tpl').textContent,btn=this;
+/* copy comment template (every "Your turn" box) */
+document.addEventListener('click',e=>{const btn=e.target.closest('.cta .copy');if(!btn)return;
+  const code=btn.parentElement.querySelector('code'),t=code.textContent;
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(code);const s=getSelection();s.removeAllRanges();s.addRange(r);};
   const ok=()=>{btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy',1600);};
-  try{navigator.clipboard.writeText(t).then(ok,()=>{selectTpl();});}catch(e){selectTpl();}};
-function selectTpl(){const r=document.createRange();r.selectNodeContents(document.getElementById('tpl'));const s=getSelection();s.removeAllRanges();s.addRange(r);}
+  try{navigator.clipboard.writeText(t).then(ok,sel);}catch(err){sel();}});
 </script>

@@ -278,6 +278,7 @@ def render(work, W, C, meta, audio, thumb_src):
       <h3>{esc(base)}</h3>
       <button class="say" type="button" data-a="w{i:02d}" aria-label="Hear the word {esc(base)}">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      {('<span class="ipa">' + esc(c["ipa"]) + '</span>') if c.get("ipa") else ""}
       <span class="pos">{esc(c.get("pos", ""))}</span>{in_ep}
     </header>
     <p class="def">{esc(v["meaning"])}</p>
@@ -299,7 +300,10 @@ def render(work, W, C, meta, audio, thumb_src):
 </article>''')
         chips.append('<a class="chip" href="#%s" data-w="%s">%s</a>' % (wid, wid, esc(base)))
     page = open(os.path.join(HERE, "page_template.html"), encoding="utf-8").read()
-    rep = {"__TITLE__": esc(meta["title"]), "__EP__": str(meta["ep"]), "__N__": str(len(W)), "__YT__": esc(meta["yt"]),
+    if len(cards) >= 8:
+        cards.insert(len(cards) // 2, "\n" + cta_box("mid", meta["yt"]))
+    rep = {"__CTA_TOP__": cta_box("top", meta["yt"]), "__CTA_END__": cta_box("end", meta["yt"]),
+           "__TITLE__": esc(meta["title"]), "__EP__": str(meta["ep"]), "__N__": str(len(W)), "__YT__": esc(meta["yt"]),
            "__THUMB__": thumb_src, "__CHIPS__": "".join(chips), "__CARDS__": "".join(cards), "__QUESTION__": esc(meta.get("question", "")),
            "__AUD__": json.dumps(audio), "__QUIZ__": json.dumps(quiz, ensure_ascii=False).replace("</", "<\\/")}
     for k, val in rep.items():
@@ -318,6 +322,18 @@ def wrap(body, desc):
             % (esc(desc), title, esc(desc)))
     body = body.replace('<header class="band">', '</head>\n<body>\n<header class="band">', 1)
     return head + body + "\n</body>\n</html>\n"
+
+
+def cta_box(kind, yt):
+    """Khung 'Your turn' kêu gọi bình luận — đặt ở đầu, giữa danh sách và cuối trang."""
+    head = {"top": ("Use a word, share your sentence", "Learn a word below, then use it in a sentence about your own life and post it under the episode. We read them all!"),
+            "mid": ("Halfway there! Try one word now", "Pick a word you just practised and write your own sentence in the YouTube comments."),
+            "end": ("Your turn: write a sentence", "Pick one word from today and use it in a sentence about your own life. Post it in the comments under the episode. We read them all!")}[kind]
+    mini = "" if kind == "end" else " mini"
+    return ('<section class="cta%s" aria-label="Write a sentence in the comments"><h2>%s</h2><p>%s</p>'
+            '<div class="tpl"><code>My word is "_____": ______________________</code><button class="btn copy" type="button">Copy</button></div>'
+            '<div class="btns"><a class="btn" href="%s" target="_blank" rel="noopener">Comment on YouTube ↗</a></div></section>'
+            % (mini, esc(head[0]), esc(head[1]), esc(yt)))
 
 
 HOME_CARD = ('<a class="ep" href="ep{nn}/" data-ep="{n}"><img src="img/ep{nn}.jpg" alt="Episode {n}: {t}"><div class="t">'
@@ -367,13 +383,52 @@ def cmd_build(a):
     # giọng đọc
     tdir = os.path.join(work, "tts"); os.makedirs(tdir, exist_ok=True)
     tts = TTS()
+    import aligner
+    flat = lambda x: re.sub(r"[^a-z]", "", x.lower())
+
+    def heard(p):
+        return " ".join(w["w"] for w in aligner.asr_words(aligner.load(p), "en"))
+
+    def say_checked(text, tries, out, exact):
+        """Đọc rồi cho máy nghe lại; sai (thêm 'a', đọc méo...) thì đổi tốc độ/giọng. Trả về (ok, nghe được)."""
+        last = ""
+        for voice, speed in tries:
+            tts.say(text, voice, out, speed)
+            last = heard(out)
+            if exact:
+                if flat(last) == flat(text):
+                    return True, last
+            else:
+                uk = lambda x: flat(x.replace("our", "or"))      # colour/color, savour/savor
+                a, b = uk(text), uk(last)
+                if difflib.SequenceMatcher(None, a, b).ratio() >= 0.9 and b[:3] == a[:3]:
+                    return True, last
+        return False, last
+
+    WORD_TRIES = [("af_heart", 1.0), ("af_heart", 1.1), ("af_nova", 1.0), ("af_bella", 1.0), ("af_sarah", 1.0)]
+    issues = []
     for i, v in enumerate(W):
         c = C[v["word"]]
-        tts.say(c["base"], "af_heart", os.path.join(tdir, "w%02d.mp3" % i), 0.85)
+        w_txt = c["base"][:1].upper() + c["base"][1:] + "."
+        ok, got = say_checked(w_txt, WORD_TRIES, os.path.join(tdir, "w%02d.mp3" % i), True)
+        if not ok:
+            issues.append("phát âm '%s' máy nghe ra '%s'" % (c["base"], got))
         for j, ex in enumerate(c["ex"]):
-            tts.say(ex[0], "af_heart" if j == 0 else "am_puck", os.path.join(tdir, "e%02d_%d.mp3" % (i, j)))
+            v1 = "af_heart" if j == 0 else "am_puck"
+            alt = "af_nova" if j == 0 else "am_michael"
+            ok, got = say_checked(ex[0], [(v1, 0.95), (v1, 1.0), (alt, 1.0)], os.path.join(tdir, "e%02d_%d.mp3" % (i, j)), False)
+            if not ok:
+                issues.append("câu '%s' máy nghe ra '%s'" % (ex[0], got))
         if v["source"] != "episode" and v["text"]:
-            tts.say(v["text"], "am_puck" if v["sp"] in MALE else "af_heart", os.path.join(tdir, "m%02d.mp3" % i))
+            v1 = "am_puck" if v["sp"] in MALE else "af_heart"
+            ok, got = say_checked(v["text"], [(v1, 0.95), (v1, 1.0), ("am_michael" if v["sp"] in MALE else "af_nova", 1.0)],
+                                  os.path.join(tdir, "m%02d.mp3" % i), False)
+            if not ok:
+                issues.append("câu phim '%s' máy nghe ra '%s'" % (v["text"], got))
+    if issues:
+        print("TTS_CHECK: %d chỗ cần nghe lại:\n  " % len(issues) + "\n  ".join(issues))
+    else:
+        print("TTS_CHECK: tất cả giọng đọc đã được máy nghe lại, đúng chữ.")
     print("TTS_OK", flush=True)
 
     def files_for(i, v):

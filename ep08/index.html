@@ -148,6 +148,11 @@ svg{width:18px;height:18px;fill:currentColor;flex:0 0 auto}
 .cta .tpl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin:0 0 14px}
 .cta .tpl code{flex:1;min-width:0;font-family:var(--body);font-size:17px;font-weight:700;color:#fff;word-break:break-word}
 .cta .btns{display:flex;flex-wrap:wrap;gap:10px}
+.cta.mini{margin:20px 0 4px;padding:16px 18px}
+.cta.mini h2{font-size:20px}
+.cta.mini p{margin:4px 0 12px;font-size:16px}
+.cards .cta{margin:4px 0}
+.ipa{font-family:"Noto Sans","Segoe UI","Lucida Sans Unicode","DejaVu Sans",sans-serif;font-size:17px;color:var(--ink-2);letter-spacing:.01em}
 .cta a.btn,.cta button.btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;text-decoration:none;border-radius:10px;padding:9px 16px;border:2px solid #FFD21F;cursor:pointer}
 .cta a.btn{background:#FFD21F;color:#121F55}
 .cta button.btn{background:transparent;color:#FFD21F}
@@ -190,6 +195,8 @@ html{scroll-behavior:smooth}
     </section>
   </div>
 
+  <section class="cta mini" aria-label="Write a sentence in the comments"><h2>Use a word, share your sentence</h2><p>Learn a word below, then use it in a sentence about your own life and post it under the episode. We read them all!</p><div class="tpl"><code>My word is "_____": ______________________</code><button class="btn copy" type="button">Copy</button></div><div class="btns"><a class="btn" href="https://youtu.be/BWsd-CGLck0" target="_blank" rel="noopener">Comment on YouTube ↗</a></div></section>
+
   <section class="index" aria-labelledby="idx">
     <div class="row"><h2 id="idx">Today's words</h2><span class="prog" id="prog">0 / 33 practised</span></div>
     <div class="bar"><i id="bar"></i></div>
@@ -205,6 +212,7 @@ html{scroll-behavior:smooth}
       <h3>faraway</h3>
       <button class="say" type="button" data-a="w00" aria-label="Hear the word faraway">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈfɑːrəweɪ/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Distant, as if thinking about something far off.</p>
@@ -232,6 +240,7 @@ html{scroll-behavior:smooth}
       <h3>spark</h3>
       <button class="say" type="button" data-a="w01" aria-label="Hear the word spark">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/spɑːrk/</span>
       <span class="pos">noun</span>
     </header>
     <p class="def">A sudden small flash, often used for a sudden idea.</p>
@@ -259,6 +268,7 @@ html{scroll-behavior:smooth}
       <h3>secret</h3>
       <button class="say" type="button" data-a="w02" aria-label="Hear the word secret">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈsiːkrət/</span>
       <span class="pos">noun / adjective</span>
     </header>
     <p class="def">Something kept hidden from others.</p>
@@ -286,6 +296,7 @@ html{scroll-behavior:smooth}
       <h3>delight</h3>
       <button class="say" type="button" data-a="w03" aria-label="Hear the word delight">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/dɪˈlaɪt/</span>
       <span class="pos">noun</span>
     </header>
     <p class="def">A feeling of great happiness.</p>
@@ -313,6 +324,7 @@ html{scroll-behavior:smooth}
       <h3>chuckle</h3>
       <button class="say" type="button" data-a="w04" aria-label="Hear the word chuckle">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈtʃʌkl/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>chuckled</b></span>
     </header>
     <p class="def">Laughed quietly.</p>
@@ -340,6 +352,7 @@ html{scroll-behavior:smooth}
       <h3>vague</h3>
       <button class="say" type="button" data-a="w05" aria-label="Hear the word vague">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/veɪɡ/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Not clear or exact.</p>
@@ -367,6 +380,7 @@ html{scroll-behavior:smooth}
       <h3>by feel</h3>
       <button class="say" type="button" data-a="w06" aria-label="Hear the word by feel">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/baɪ fiːl/</span>
       <span class="pos">phrase</span>
     </header>
     <p class="def">Doing something using instinct or touch instead of exact measuring.</p>
@@ -394,6 +408,7 @@ html{scroll-behavior:smooth}
       <h3>frustrated</h3>
       <button class="say" type="button" data-a="w07" aria-label="Hear the word frustrated">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈfrʌstreɪtɪd/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Annoyed because something feels difficult to understand.</p>
@@ -421,6 +436,7 @@ html{scroll-behavior:smooth}
       <h3>half-finished</h3>
       <button class="say" type="button" data-a="w08" aria-label="Hear the word half-finished">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˌhæf ˈfɪnɪʃt/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Not yet complete, only partly done.</p>
@@ -448,6 +464,7 @@ html{scroll-behavior:smooth}
       <h3>precise</h3>
       <button class="say" type="button" data-a="w09" aria-label="Hear the word precise">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/prɪˈsaɪs/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Very exact and accurate.</p>
@@ -475,6 +492,7 @@ html{scroll-behavior:smooth}
       <h3>sniff</h3>
       <button class="say" type="button" data-a="w10" aria-label="Hear the word sniff">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/snɪf/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>sniffed</b></span>
     </header>
     <p class="def">Smelled something by breathing in through the nose.</p>
@@ -502,6 +520,7 @@ html{scroll-behavior:smooth}
       <h3>panic</h3>
       <button class="say" type="button" data-a="w11" aria-label="Hear the word panic">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈpænɪk/</span>
       <span class="pos">noun / verb</span>
     </header>
     <p class="def">A sudden strong feeling of fear or worry.</p>
@@ -529,6 +548,7 @@ html{scroll-behavior:smooth}
       <h3>decade</h3>
       <button class="say" type="button" data-a="w12" aria-label="Hear the word decade">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈdekeɪd/</span>
       <span class="pos">noun</span><span class="form">in the episode: <b>decades</b></span>
     </header>
     <p class="def">Periods of ten years.</p>
@@ -556,6 +576,7 @@ html{scroll-behavior:smooth}
       <h3>beg</h3>
       <button class="say" type="button" data-a="w13" aria-label="Hear the word beg">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/beɡ/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>begged</b></span>
     </header>
     <p class="def">Asked for something in a strong, pleading way.</p>
@@ -583,6 +604,7 @@ html{scroll-behavior:smooth}
       <h3>fade</h3>
       <button class="say" type="button" data-a="w14" aria-label="Hear the word fade">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/feɪd/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>faded</b></span>
     </header>
     <p class="def">Slowly disappeared or became less clear.</p>
@@ -610,6 +632,7 @@ html{scroll-behavior:smooth}
       <h3>tradition</h3>
       <button class="say" type="button" data-a="w15" aria-label="Hear the word tradition">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/trəˈdɪʃn/</span>
       <span class="pos">noun</span>
     </header>
     <p class="def">Something special a family does again and again, passed from one generation to the next.</p>
@@ -629,6 +652,7 @@ html{scroll-behavior:smooth}
     <label class="done"><input type="checkbox" id="done-w15" data-w="w15"> I can use this word</label>
   </div>
 </article>
+<section class="cta mini" aria-label="Write a sentence in the comments"><h2>Halfway there! Try one word now</h2><p>Pick a word you just practised and write your own sentence in the YouTube comments.</p><div class="tpl"><code>My word is "_____": ______________________</code><button class="btn copy" type="button">Copy</button></div><div class="btns"><a class="btn" href="https://youtu.be/BWsd-CGLck0" target="_blank" rel="noopener">Comment on YouTube ↗</a></div></section>
 <article class="card" id="w16">
   <div class="pic" aria-hidden="true">🤔🚪</div>
   <div class="body">
@@ -637,6 +661,7 @@ html{scroll-behavior:smooth}
       <h3>hesitate</h3>
       <button class="say" type="button" data-a="w16" aria-label="Hear the word hesitate">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈhezɪteɪt/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>hesitated</b></span>
     </header>
     <p class="def">Paused for a moment before deciding.</p>
@@ -664,6 +689,7 @@ html{scroll-behavior:smooth}
       <h3>guide</h3>
       <button class="say" type="button" data-a="w17" aria-label="Hear the word guide">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ɡaɪd/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>guided</b></span>
     </header>
     <p class="def">Helped show someone how to do something.</p>
@@ -691,6 +717,7 @@ html{scroll-behavior:smooth}
       <h3>burst out laughing</h3>
       <button class="say" type="button" data-a="w18" aria-label="Hear the word burst out laughing">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˌbɜːrst aʊt ˈlæfɪŋ/</span>
       <span class="pos">phrase</span>
     </header>
     <p class="def">Suddenly started laughing loudly.</p>
@@ -718,6 +745,7 @@ html{scroll-behavior:smooth}
       <h3>approval</h3>
       <button class="say" type="button" data-a="w19" aria-label="Hear the word approval">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/əˈpruːvl/</span>
       <span class="pos">noun</span>
     </header>
     <p class="def">A sign that you think something is good.</p>
@@ -745,6 +773,7 @@ html{scroll-behavior:smooth}
       <h3>thrilled</h3>
       <button class="say" type="button" data-a="w20" aria-label="Hear the word thrilled">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/θrɪld/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Extremely excited and happy.</p>
@@ -772,6 +801,7 @@ html{scroll-behavior:smooth}
       <h3>beam</h3>
       <button class="say" type="button" data-a="w21" aria-label="Hear the word beam">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/biːm/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>beamed</b></span>
     </header>
     <p class="def">Smiled very brightly and happily.</p>
@@ -799,6 +829,7 @@ html{scroll-behavior:smooth}
       <h3>surprise</h3>
       <button class="say" type="button" data-a="w22" aria-label="Hear the word surprise">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/sərˈpraɪz/</span>
       <span class="pos">noun</span>
     </header>
     <p class="def">Something unexpected and exciting.</p>
@@ -826,6 +857,7 @@ html{scroll-behavior:smooth}
       <h3>moved</h3>
       <button class="say" type="button" data-a="w23" aria-label="Hear the word moved">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/muːvd/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Feeling deep emotion, often touched by something.</p>
@@ -853,6 +885,7 @@ html{scroll-behavior:smooth}
       <h3>savor</h3>
       <button class="say" type="button" data-a="w24" aria-label="Hear the word savor">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈseɪvər/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>savoring</b></span>
     </header>
     <p class="def">Enjoying the taste of food slowly.</p>
@@ -880,6 +913,7 @@ html{scroll-behavior:smooth}
       <h3>fascinated</h3>
       <button class="say" type="button" data-a="w25" aria-label="Hear the word fascinated">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈfæsɪneɪtɪd/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Very interested in something.</p>
@@ -907,6 +941,7 @@ html{scroll-behavior:smooth}
       <h3>giggle</h3>
       <button class="say" type="button" data-a="w26" aria-label="Hear the word giggle">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈɡɪɡl/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>giggled</b></span>
     </header>
     <p class="def">Laughed in a light, happy way.</p>
@@ -934,6 +969,7 @@ html{scroll-behavior:smooth}
       <h3>exact</h3>
       <button class="say" type="button" data-a="w27" aria-label="Hear the word exact">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ɪɡˈzækt/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Completely correct and precise.</p>
@@ -961,6 +997,7 @@ html{scroll-behavior:smooth}
       <h3>toast</h3>
       <button class="say" type="button" data-a="w28" aria-label="Hear the word toast">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/toʊst/</span>
       <span class="pos">noun</span>
     </header>
     <p class="def">Raising a drink together to celebrate something.</p>
@@ -988,6 +1025,7 @@ html{scroll-behavior:smooth}
       <h3>cheerful</h3>
       <button class="say" type="button" data-a="w29" aria-label="Hear the word cheerful">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈtʃɪrfl/</span>
       <span class="pos">adjective</span>
     </header>
     <p class="def">Happy and in good spirits.</p>
@@ -1015,6 +1053,7 @@ html{scroll-behavior:smooth}
       <h3>ruffle</h3>
       <button class="say" type="button" data-a="w30" aria-label="Hear the word ruffle">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈrʌfl/</span>
       <span class="pos">verb</span><span class="form">in the episode: <b>ruffled</b></span>
     </header>
     <p class="def">Gently messed up someone&#x27;s hair with your hand, as a warm gesture.</p>
@@ -1042,6 +1081,7 @@ html{scroll-behavior:smooth}
       <h3>generation</h3>
       <button class="say" type="button" data-a="w31" aria-label="Hear the word generation">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˌdʒenəˈreɪʃn/</span>
       <span class="pos">noun</span><span class="form">in the episode: <b>generations</b></span>
     </header>
     <p class="def">Groups of family members from different age periods (grandparents, parents, children).</p>
@@ -1069,6 +1109,7 @@ html{scroll-behavior:smooth}
       <h3>gratitude</h3>
       <button class="say" type="button" data-a="w32" aria-label="Hear the word gratitude">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button>
+      <span class="ipa">/ˈɡrætɪtuːd/</span>
       <span class="pos">noun</span>
     </header>
     <p class="def">A feeling of being thankful.</p>
@@ -1096,12 +1137,7 @@ html{scroll-behavior:smooth}
     <div class="score"><span id="score"></span><button class="play" type="button" id="newq">New questions</button></div>
   </section>
 
-  <section class="cta" aria-labelledby="ct">
-    <h2 id="ct">Your turn: write a sentence</h2>
-    <p>Pick one word from today and use it in a sentence about your own life. Post it in the comments under the episode. We read them all!</p>
-    <div class="tpl"><code id="tpl">My word is "_____": ______________________</code><button class="btn" type="button" id="copy">Copy</button></div>
-    <div class="btns"><a class="btn" href="https://youtu.be/BWsd-CGLck0" target="_blank" rel="noopener">Comment on YouTube ↗</a></div>
-  </section>
+  <section class="cta" aria-label="Write a sentence in the comments"><h2>Your turn: write a sentence</h2><p>Pick one word from today and use it in a sentence about your own life. Post it in the comments under the episode. We read them all!</p><div class="tpl"><code>My word is "_____": ______________________</code><button class="btn copy" type="button">Copy</button></div><div class="btns"><a class="btn" href="https://youtu.be/BWsd-CGLck0" target="_blank" rel="noopener">Comment on YouTube ↗</a></div></section>
   <p class="foot"><a href="../" style="color:inherit;font-weight:800">← All episodes</a><br>Fun English Tales · Episode 8 · Grandpa&#x27;s Secret Recipe</p>
 </main>
 
@@ -1167,11 +1203,12 @@ document.getElementById('qs').addEventListener('click',e=>{const b=e.target.clos
   box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.textContent===box.dataset.ans)o.classList.add('right');});if(!ok)b.classList.add('wrong');score();});
 document.getElementById('newq').onclick=makeQuiz;makeQuiz();
 
-/* copy comment template */
-document.getElementById('copy').onclick=function(){const t=document.getElementById('tpl').textContent,btn=this;
+/* copy comment template (every "Your turn" box) */
+document.addEventListener('click',e=>{const btn=e.target.closest('.cta .copy');if(!btn)return;
+  const code=btn.parentElement.querySelector('code'),t=code.textContent;
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(code);const s=getSelection();s.removeAllRanges();s.addRange(r);};
   const ok=()=>{btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy',1600);};
-  try{navigator.clipboard.writeText(t).then(ok,()=>{selectTpl();});}catch(e){selectTpl();}};
-function selectTpl(){const r=document.createRange();r.selectNodeContents(document.getElementById('tpl'));const s=getSelection();s.removeAllRanges();s.addRange(r);}
+  try{navigator.clipboard.writeText(t).then(ok,sel);}catch(err){sel();}});
 </script>
 
 </body>
