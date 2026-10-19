@@ -31,24 +31,35 @@ CODE_RE = re.compile(r'^\[([A-Z0-9_]+)\]:\s*"(.*?)"\s*(.*)$')
 
 
 def parse_script(path):
-    """File TRICH_VOICE: 'Scene 0001: ...' ; lời nhân vật dạng [GRANDPA_V1]: "..." (có thể kèm lời kể phía sau)."""
+    """File TRICH_VOICE: 'Scene 0001: ...'; lời nhân vật dạng [GRANDPA_V1]: "..." (trước/sau có thể kèm lời kể).
+    - Scene phụ kiểu 0092B được gộp vào scene 92; ghi chú trong ngoặc (BỔ SUNG...) bị bỏ.
+    - Lời trong ngoặc kép không ghi tên -> người nói 'Character'."""
     scenes = []
     for raw in open(path, encoding="utf-8-sig"):
-        m = re.match(r"^\s*Scene\s+(\d+)\s*:\s*(.*)$", raw.strip())
+        m = re.match(r"^\s*Scene\s+(\d+)([A-Za-z]?)\s*:\s*(.*)$", raw.strip())
         if not m:
             continue
-        n = int(m.group(1))
-        body = re.sub(r"\s+", " ", m.group(2).replace("“", '"').replace("”", '"')).strip()
+        n, sub = int(m.group(1)), m.group(2)
+        body = re.sub(r"\s+", " ", m.group(3).replace("“", '"').replace("”", '"')).strip()
+        body = re.sub(r"^\([^)]*[^\x00-\x7f][^)]*\)\s*", "", body)     # ghi chú tiếng Việt đầu dòng
         lines = []
-        c = CODE_RE.match(body)
-        if c:
-            pre = re.sub(r"\d+$", "", c.group(1).split("_")[0])
-            lines.append((NAMES.get(pre, pre.title()), c.group(2).strip()))
-            if c.group(3).strip():
-                lines.append(("Narrator", c.group(3).strip()))
-        elif body:
-            lines.append(("Narrator", body.strip('"').strip()))
-        if scenes and any(x[0] == n for x in scenes):
+        pos = 0
+        for c in re.finditer(r'\[([A-Z0-9_]+)\]:\s*"(.*?)"', body):
+            pre = body[pos:c.start()].strip()
+            if pre:
+                lines.append(("Narrator", pre))
+            code = re.sub(r"\d+$", "", c.group(1).split("_")[0])
+            lines.append((NAMES.get(code, code.title()), c.group(2).strip()))
+            pos = c.end()
+        rest = body[pos:].strip()
+        if rest:
+            if re.fullmatch(r'"[^"]+"', rest):
+                lines.append(("Character", rest.strip('"').strip()))
+            else:
+                lines.append(("Narrator", rest.strip('"').strip() if rest.count('"') == 2 and rest.startswith('"') and rest.endswith('"') else rest))
+        if sub and scenes and scenes[-1][0] == n:
+            scenes[-1][1].extend(lines); continue
+        if any(x[0] == n for x in scenes):
             continue                     # scene trùng số (file prompt lặp dòng) -> giữ lần đầu
         scenes.append([n, lines])
     if not scenes:
