@@ -26,7 +26,7 @@ esc = lambda s: html.escape(s, quote=True)
 
 # ---------- 1. lời thoại ----------
 NAMES = {"BROTHER": "Leo", "SISTER": "Mia", "MOM": "Mom", "DAD": "Dad", "GRANDPA": "Grandpa",
-         "GRANDMA": "Grandma", "BUDDY": "Buddy"}
+         "GRANDMA": "Grandma", "BUDDY": "Buddy", "DOG": "Buddy"}
 CODE_RE = re.compile(r'^\[([A-Z0-9_]+)\]:\s*"(.*?)"\s*(.*)$')
 
 
@@ -426,14 +426,15 @@ def cmd_build(a):
                     return True, last
         return False, last
 
-    WORD_TRIES = [("af_heart", 1.0), ("af_heart", 1.1), ("af_nova", 1.0), ("af_bella", 1.0), ("af_sarah", 1.0),
-                  ("af_alloy", 1.0), ("am_adam", 1.0)]
+    # Giọng nam Michael cho phát âm từ đơn (chị duyệt 19/10/2026: giọng nữ Heart đọc từ đơn hay chèn tiếng "a" phía trước)
+    WORD_TRIES = [("am_michael", 1.0), ("am_michael", 1.1), ("am_adam", 1.0), ("am_michael", 0.95),
+                  ("af_heart", 1.0), ("af_nova", 1.0)]
 
     def word_from_carrier(base, out):
         """Cách cuối: đọc từ trong câu đệm 'Say X once more.', máy xác nhận nghe đúng X, rồi cắt riêng đoạn X."""
         tmp = out + ".carrier.mp3"
         for voice, carrier in [(v, c) for c in ("Say %s once more.", "Please %s it.", "I %s it now.", "It is %s now.")
-                               for v in ("af_heart", "af_nova", "af_alloy")]:
+                               for v in ("am_michael", "am_adam", "af_heart")]:
             tts.say(carrier % base, voice, tmp, 1.0)
             ws = aligner.asr_words(aligner.load(tmp), "en")
             n = len(base.split())
@@ -527,6 +528,37 @@ def cmd_build(a):
     print("SINGLE_OK %s (%.1f MB) · %d từ · %d câu quiz" % (single, os.path.getsize(single) / 1e6, len(W), nq))
 
 
+def cmd_extract(a):
+    """File prompt 120 scene (.txt/.docx) -> file lời thoại dạng TRICH_VOICE (lấy phần [VO: ...] của mỗi scene)."""
+    src = a.prompts
+    if src.lower().endswith(".docx"):
+        txt = subprocess.run(["pandoc", src, "-t", "plain", "--wrap=none"], capture_output=True, text=True, check=True).stdout
+    else:
+        txt = open(src, encoding="utf-8-sig").read()
+    out, seen, miss = [], set(), []
+    for line in txt.splitlines():
+        m = re.match(r"^\s*Scene\s+(\d+)\s*:", line)
+        if not m:
+            continue
+        n = m.group(1)
+        if n in seen:
+            continue                      # file prompt lặp dòng -> giữ lần đầu
+        seen.add(n)
+        i = line.find("[VO:")
+        if i < 0:
+            miss.append(n); out.append("Scene %s: " % n); continue
+        s2, depth, j = line[i + 4:], 1, 0
+        while j < len(s2) and depth:
+            depth += {"[": 1, "]": -1}.get(s2[j], 0); j += 1
+        vo = s2[:j - 1].strip()
+        # thẻ nhân vật nằm giữa lời kể (vd "[ZOE_V1] texted: ...") -> tên nhân vật
+        if not re.match(r"^\[[A-Z0-9_]+\]:", vo):
+            vo = re.sub(r"\[([A-Z]+)\d*_V\d+\]", lambda mm: NAMES.get(mm.group(1), mm.group(1).title()), vo)
+        out.append("Scene %s: %s" % (n, vo))
+    open(a.out, "w", encoding="utf-8").write("\n".join(out) + "\n")
+    print("EXTRACT_OK %s · %d scene%s" % (a.out, len(out), (" · KHÔNG CÓ VO: " + ", ".join(miss)) if miss else ""))
+
+
 def cmd_test(a):
     """Kiểm tra nhanh trang web trên giả lập iPhone + Android (cần playwright + chromium)."""
     import http.server, threading, functools
@@ -568,6 +600,7 @@ if __name__ == "__main__":
     p.add_argument("--work", required=True)
     p = sub.add_parser("build"); p.add_argument("--work", required=True); p.add_argument("--site")
     p.add_argument("--skip-tts", action="store_true", help="dùng lại giọng đọc đã tạo (khi chỉ sửa giao diện hoặc thay vài file)")
+    p = sub.add_parser("extract"); p.add_argument("--prompts", required=True); p.add_argument("--out", required=True)
     p = sub.add_parser("test"); p.add_argument("--site", required=True); p.add_argument("--ep", type=int, required=True)
     a = ap.parse_args()
-    {"prepare": cmd_prepare, "build": cmd_build, "test": cmd_test}[a.cmd](a)
+    {"prepare": cmd_prepare, "build": cmd_build, "test": cmd_test, "extract": cmd_extract}[a.cmd](a)
