@@ -36,7 +36,7 @@ def parse_script(path):
     - Lời trong ngoặc kép không ghi tên -> người nói 'Character'."""
     scenes = []
     for raw in open(path, encoding="utf-8-sig"):
-        m = re.match(r"^\s*Scene\s+(\d+)([A-Za-z]?)\s*:\s*(.*)$", raw.strip())
+        m = re.match(r"^\s*Scene\s+(\d+)([A-Za-z]?)\s*(?:\([^)]*\))?\s*:\s*(.*)$", raw.strip())
         if not m:
             continue
         n, sub = int(m.group(1)), m.group(2)
@@ -91,6 +91,7 @@ def parse_vocab(path):
     return out
 
 
+SELF_RE2 = re.compile(r"(?:^|[.!?\"]\s*)An?\s+([a-z]+) is (someone|something|a person|a place) (who|that|where) ([^—.!?\"]+)")
 SELF_RE = re.compile(r"(?:^|[.!?\"]\s*)(?:An?\s+|To\s+)?([A-Za-z][a-z-]+) means ([^—.]+)")
 
 
@@ -99,10 +100,15 @@ def self_explained(scenes, have):
     out = []
     for n, ls in scenes:
         for sp, tx in ls:
-            if sp != "Narrator":
-                continue
+            for m2 in SELF_RE2.finditer(tx):
+                w = m2.group(1).lower()
+                if w not in have and w not in [o["word"] for o in out]:
+                    out.append(dict(word=w, pos="", meaning=("%s %s %s." % (m2.group(2), m2.group(3), m2.group(4).strip())).capitalize(),
+                                    vi="", scene=n, selfx=True))
             for m in SELF_RE.finditer(tx):
                 w = m.group(1).lower()
+                if w in ("that", "this", "it", "which", "what", "he", "she", "which"):
+                    continue
                 if w not in have and w not in [o["word"] for o in out]:
                     out.append(dict(word=w, pos="", meaning=m.group(2).strip().capitalize().rstrip(",") + ".",
                                     vi="", scene=n, selfx=True))
@@ -548,7 +554,7 @@ def cmd_extract(a):
         txt = open(src, encoding="utf-8-sig").read()
     out, seen, miss = [], set(), []
     for line in txt.splitlines():
-        m = re.match(r"^\s*Scene\s+(\d+)\s*:", line)
+        m = re.match(r"^\s*Scene\s+(\d+[A-Za-z]?)\s*(?:\([^)]*\))?\s*:", line)
         if not m:
             continue
         n = m.group(1)
