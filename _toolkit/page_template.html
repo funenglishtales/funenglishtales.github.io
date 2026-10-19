@@ -1,0 +1,271 @@
+<title>__TITLE__ Word Practice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: navy story-band header, then one reading column of word cards (picture tile + word + episode line + real-life lines), quiz, comment call. */
+:root{
+  --navy:#1B2F7A; --navy-deep:#121F55; --sun:#FFD21F; --sun-soft:#FFF3C2; --red:#D7262E;
+  --bg:#FBF8EF; --card:#FFFFFF; --ink:#1A1E33; --ink-2:#4D5372; --line:#E6E0CD; --mark:#FFE58A;
+  --good:#1D7A47; --good-soft:#E3F4EA; --bad:#B42318; --bad-soft:#FDECEA;
+  --sp-narrator:#1B2F7A; --sp-grandpa:#8A4B12; --sp-mom:#1D7A47; --sp-mia:#7B2FA3; --sp-leo:#C25B00;
+  --display:"Fredoka","Nunito","Segoe UI",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --navy:#9DB2FF; --navy-deep:#0E1640; --sun:#FFD84A; --sun-soft:#3A3315; --red:#FF7A7F;
+  --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; --mark:#6B5410;
+  --good:#5BD38F; --good-soft:#12301F; --bad:#FF8A80; --bad-soft:#3A1715;
+  --sp-narrator:#9DB2FF; --sp-grandpa:#E3A56A; --sp-mom:#5BD38F; --sp-mia:#D29BF2; --sp-leo:#FFA94D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --navy:#9DB2FF; --navy-deep:#0E1640; --sun:#FFD84A; --sun-soft:#3A3315; --red:#FF7A7F;
+  --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; --mark:#6B5410;
+  --good:#5BD38F; --good-soft:#12301F; --bad:#FF8A80; --bad-soft:#3A1715;
+  --sp-narrator:#9DB2FF; --sp-grandpa:#E3A56A; --sp-mom:#5BD38F; --sp-mia:#D29BF2; --sp-leo:#FFA94D; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+svg{width:18px;height:18px;fill:currentColor;flex:0 0 auto}
+
+/* header band (always navy, both themes) */
+.band{background:#121F55;color:#fff}
+.band .wrap{padding-block:18px 26px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#FFD21F;font-size:17px}
+.brand small{color:#C9D2F5;font-weight:600;font-size:14px}
+.eyebrow{margin:20px 0 6px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#C9D2F5}
+.band h1{font-size:clamp(30px,6vw,46px);color:#FFD21F}
+.band h1 span{display:block;color:#fff;font-size:.55em;margin-top:6px}
+.band p{margin:12px 0 0;max-width:62ch;color:#E6EAFA}
+
+/* episode + how-to */
+.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:-14px}
+.ep{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit}
+.ep .thumb{position:relative;aspect-ratio:16/9;max-width:100%;background:#121F55}
+.ep img{width:100%;height:100%;object-fit:cover;display:block}
+.ep .yt{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:44px;border-radius:12px;background:#E1251B;display:grid;place-items:center;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.ep .yt svg{width:24px;height:24px}
+.ep .cap{padding:12px 14px;font-weight:800;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.ep .cap span{color:var(--red);font-size:15px;white-space:nowrap}
+.how{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.how h2{font-size:20px;color:var(--navy);margin-bottom:8px}
+.how ol{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:s}
+.how li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;counter-increment:s}
+.how li::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--sun);color:#121F55;font-weight:800;display:grid;place-items:center;font-size:15px}
+.how b{color:var(--ink)}
+.how li{color:var(--ink-2)}
+
+/* index + progress */
+.index{margin:26px 0 8px}
+.index .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.index h2{font-size:22px;color:var(--navy)}
+.prog{font-weight:800;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.bar{height:10px;background:var(--line);border-radius:99px;margin:8px 0 12px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--good);border-radius:99px;transition:width .3s}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:15px;font-weight:700;text-decoration:none;color:var(--navy);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px 11px}
+.chip:hover{border-color:var(--navy)}
+.chip.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.chip.ok::before{content:"✓ "}
+
+/* word card */
+.cards{display:grid;gap:16px;margin:18px 0 8px}
+.card{display:grid;grid-template-columns:92px minmax(0,1fr);gap:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;scroll-margin-top:16px}
+.card.ok{border-color:var(--good)}
+.pic{width:92px;height:92px;border-radius:18px;background:var(--sun-soft);display:grid;place-items:center;font-size:38px;line-height:1;letter-spacing:-4px}
+.head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.num{font-size:13px;font-weight:800;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.head h3{font-size:30px;color:var(--red)}
+.say{width:36px;height:36px;border-radius:50%;border:2px solid var(--navy);background:transparent;color:var(--navy);display:grid;place-items:center;cursor:pointer}
+.say.on{background:var(--navy);color:var(--card)}
+.pos{font-size:14px;font-style:italic;color:var(--ink-2)}
+.form{font-size:14px;color:var(--ink-2)}
+.form b{color:var(--ink)}
+.def{margin:6px 0 12px;font-size:18px;font-weight:600}
+.movie{background:var(--sun-soft);border-radius:12px;padding:12px 14px}
+.mhead{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px}
+.tag{font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+.spk{font-weight:800;color:#fff;border-radius:99px;padding:1px 10px}
+.spk{background:var(--navy)} .sp-narrator{background:var(--sp-narrator)} .sp-grandpa{background:var(--sp-grandpa)} .sp-mom{background:var(--sp-mom)}
+.sp-mia{background:var(--sp-mia)} .sp-leo{background:var(--sp-leo)} .sp-dad{background:var(--sp-grandpa)} .sp-grandma{background:var(--sp-mom)} .sp-buddy{background:var(--sp-leo)}
+:root[data-theme="dark"] .spk{color:#11131C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .spk{color:#11131C}}
+.scene{color:var(--ink-2)}
+.line{font-size:21px;font-weight:700;margin:8px 0 10px;line-height:1.45}
+.tk{border-radius:5px;transition:color .08s}
+.line.going .tk{color:var(--ink-2)}
+.line.going .tk.past,.line.going .tk.now{color:var(--ink)}
+.tk.kw,mark.hl{background:var(--mark);color:inherit;border-radius:5px;padding:0 3px;font-weight:800}
+.tk.now{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:3px;text-underline-offset:4px}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.play{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:16px;background:var(--navy);color:var(--card);border:2px solid var(--navy);border-radius:10px;padding:7px 14px;cursor:pointer}
+.play.ghost{background:transparent;color:var(--navy)}
+.play.on{background:var(--red);border-color:var(--red);color:#fff}
+.play.sm{width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.tip{font-size:14px;color:var(--ink-2)}
+.life{margin-top:14px}
+.life h4{font-size:17px;color:var(--navy);margin-bottom:6px}
+.life ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.ex{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;align-items:start}
+.ex .en{margin:4px 0 2px;font-size:18px;font-weight:700}
+.ex .mean{margin:0;font-size:15px;color:var(--ink-2)}
+.ex .mean span{font-weight:800;color:var(--ink)}
+.done{display:inline-flex;gap:8px;align-items:center;margin-top:14px;font-weight:700;font-size:15px;color:var(--ink-2);cursor:pointer}
+.done input{width:20px;height:20px;accent-color:var(--good)}
+
+/* quiz */
+.quiz,.cta{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin:26px 0}
+.quiz h2,.cta h2{font-size:24px;color:var(--navy)}
+.quiz .sub,.cta p{color:var(--ink-2);margin:6px 0 14px}
+.qs{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:q}
+.qs li{counter-increment:q;border-top:1px solid var(--line);padding-top:12px}
+.qs .q{font-size:18px;font-weight:700;margin:0 0 8px}
+.qs .q::before{content:counter(q) ". ";color:var(--ink-2)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:2px solid var(--line);background:var(--bg);border-radius:10px;padding:6px 14px;font-weight:700;cursor:pointer}
+.opt:hover{border-color:var(--navy)}
+.opt.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.opt:disabled{cursor:default}
+.score{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;font-weight:800;font-size:18px}
+.score .play{font-size:15px}
+.cta{background:#121F55;border-color:#121F55;color:#fff}
+.cta h2{color:#FFD21F}
+.cta p{color:#D9DEF5}
+.cta .tpl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin:0 0 14px}
+.cta .tpl code{flex:1;min-width:0;font-family:var(--body);font-size:17px;font-weight:700;color:#fff;word-break:break-word}
+.cta .btns{display:flex;flex-wrap:wrap;gap:10px}
+.cta a.btn,.cta button.btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;text-decoration:none;border-radius:10px;padding:9px 16px;border:2px solid #FFD21F;cursor:pointer}
+.cta a.btn{background:#FFD21F;color:#121F55}
+.cta button.btn{background:transparent;color:#FFD21F}
+.foot{color:var(--ink-2);font-size:14px;padding-block:8px 34px;text-align:center}
+
+@media (max-width:640px){
+  .top{grid-template-columns:minmax(0,1fr);margin-top:-10px}
+  .card{grid-template-columns:minmax(0,1fr);padding:16px}
+  .pic{width:64px;height:64px;font-size:28px;border-radius:14px}
+  .head h3{font-size:27px}
+  .line{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<header class="band"><div class="wrap">
+  <div class="brand"><svg viewBox="0 0 48 48" width="34" height="34" style="width:34px;height:34px" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#FFD21F"/><path d="M10 34c4-2 9-3 14-1 5-2 10-1 14 1V15c-4-2-9-3-14-1-5-2-10-1-14 1z" fill="#fff" stroke="#121F55" stroke-width="2.4" stroke-linejoin="round"/><path d="M24 14v19" stroke="#121F55" stroke-width="2.4"/></svg>
+    <span>Fun English Tales<br><small>Learn English Through Real Family Stories</small></span></div>
+  <p class="eyebrow">Episode __EP__ · Slow English (A2) · __N__ new words</p>
+  <h1>__TITLE__<span>Word Practice</span></h1>
+  <p>Hear each new word in the Thompson family's own voices, then learn to use it in your everyday life.</p>
+</div></header>
+
+<main class="wrap">
+  <div class="top">
+    <a class="ep" href="__YT__" target="_blank" rel="noopener">
+      <div class="thumb"><img src="__THUMB__" alt="Episode __EP__: __TITLE__"><span class="yt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></div>
+      <div class="cap">Watch Episode __EP__ first <span>Open on YouTube ↗</span></div>
+    </a>
+    <section class="how">
+      <h2>How to practise</h2>
+      <ol>
+        <li><span><b>Listen.</b> Press Listen to hear the line from the episode. Try Slow if it is fast.</span></li>
+        <li><span><b>Repeat.</b> Pause and say the line out loud, just like the character.</span></li>
+        <li><span><b>Use it.</b> Read the real-life examples, then write your own sentence in the YouTube comments.</span></li>
+      </ol>
+    </section>
+  </div>
+
+  <section class="index" aria-labelledby="idx">
+    <div class="row"><h2 id="idx">Today's words</h2><span class="prog" id="prog">0 / __N__ practised</span></div>
+    <div class="bar"><i id="bar"></i></div>
+    <nav class="chips" aria-label="Jump to a word">__CHIPS__</nav>
+  </section>
+
+  <div class="cards">__CARDS__</div>
+
+  <section class="quiz" aria-labelledby="qz">
+    <h2 id="qz">Quick check</h2>
+    <p class="sub">Choose the word that fits each sentence.</p>
+    <ol class="qs" id="qs"></ol>
+    <div class="score"><span id="score"></span><button class="play" type="button" id="newq">New questions</button></div>
+  </section>
+
+  <section class="cta" aria-labelledby="ct">
+    <h2 id="ct">Your turn: write a sentence</h2>
+    <p>Pick one word from today and use it in a sentence about your own life. Post it in the comments under the episode. We read them all!</p>
+    <div class="tpl"><code id="tpl">My word is "_____": ______________________</code><button class="btn" type="button" id="copy">Copy</button></div>
+    <div class="btns"><a class="btn" href="__YT__" target="_blank" rel="noopener">Comment on YouTube ↗</a></div>
+  </section>
+  <p class="foot">Fun English Tales · Episode __EP__ · __TITLE__</p>
+</main>
+
+<script>
+const AUD=__AUD__;
+const QUIZ=__QUIZ__;
+const A=new Audio();A.preload='auto';A.setAttribute('playsinline','');
+/* audio as Blob URLs: reliable on iPhone/iPad Safari and Android Chrome */
+const BLOB={};function blobUrl(k){if(/\.mp3$/.test(AUD[k]))return AUD[k];if(!BLOB[k]){const bin=atob(AUD[k]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);BLOB[k]=URL.createObjectURL(new Blob([u],{type:'audio/mpeg'}));}return BLOB[k];}
+let curBtn=null,curLine=null,raf=0;
+function stopAll(){A.pause();if(curBtn)curBtn.classList.remove('on');if(curLine){curLine.classList.remove('going');curLine.querySelectorAll('.tk').forEach(t=>t.classList.remove('now','past'));}curBtn=null;curLine=null;cancelAnimationFrame(raf);}
+function tick(){if(!curLine)return;const t=A.currentTime;curLine.querySelectorAll('.tk').forEach(el=>{const s=+el.dataset.s,e=+el.dataset.e;el.classList.toggle('now',t>=s&&t<e);el.classList.toggle('past',t>=e);});raf=requestAnimationFrame(tick);}
+/* website mode: each word's audio sits in one small file, fetched ahead of time */
+const PACK={},PACKP={};
+function needsPack(k){return /\.json$/.test(AUD[k]||'');}
+function loadPack(u){if(!PACKP[u])PACKP[u]=fetch(u).then(r=>r.json()).then(d=>{Object.assign(PACK,d);return d;});return PACKP[u];}
+function srcFor(k){if(needsPack(k)){if(!PACK[k])return null;const bin=atob(PACK[k]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return BLOB[k]||(BLOB[k]=URL.createObjectURL(new Blob([u],{type:'audio/mpeg'})));}return blobUrl(k);}
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){const b=en.target.querySelector('[data-a]');if(b&&needsPack(b.dataset.a))loadPack(AUD[b.dataset.a]);io.unobserve(en.target);}}),{rootMargin:'600px'});document.querySelectorAll('.card').forEach(c=>io.observe(c));}
+const SILENT='data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQxAADB8AhSmxhIIEVCSiJrDCQBTcu3UrAIwUdkRgQbFAZC1CQEwTJ9mjRvBA4UOLD8nKVOWfh+UlK3z/177OXrfOdKl7pyn3Xf//WreyTRUoAWgBgkOAGbZHBgG1OF6zM82DWbZaUmMBptgQhGjsyYqc9ae9XFz280948NMBWInljyzsNRFLPWdnZGWrddDsjK1unuSrVN9jJsK8KuQtQCtMBjCEtImISdNKJOopIpBFpNSMbIHCSRpRR5iakjTiyzLhchUUBwCgyKiweBv/7UsQbg8isVNoMPMjAAAA0gAAABEVFGmgqK////9bP/6XCykxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
+function startPlay(b,k,rate){
+  const src=srcFor(k);
+  if(!src){A.src=SILENT;A.play().catch(()=>{});loadPack(AUD[k]).then(()=>{if(curBtn===b)startPlay(b,k,rate);}).catch(()=>stopAll());return;}
+  A.src=src;A.load();A.playbackRate=rate;A.defaultPlaybackRate=rate;
+  A.play().then(()=>{A.playbackRate=rate;raf=requestAnimationFrame(tick);}).catch(()=>stopAll());
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const same=curBtn===b&&!A.paused;stopAll();if(same)return;
+  const k=b.dataset.a,rate=+(b.dataset.rate||1);
+  curBtn=b;b.classList.add('on');
+  const ln=document.querySelector('[data-line="'+k+'"]');
+  if(ln&&ln.querySelector('.tk')){curLine=ln;ln.classList.add('going');}
+  startPlay(b,k,rate);
+});
+A.addEventListener('ended',()=>{if(A.src!==SILENT)stopAll();});
+
+/* practised words (per-viewer convenience only) */
+const N=document.querySelectorAll('.card').length;
+let done={};try{done=JSON.parse(localStorage.getItem('fet-done-__EP__')||'{}')}catch(e){}
+function paint(){let c=0;document.querySelectorAll('.done input').forEach(i=>{const w=i.dataset.w,on=!!done[w];i.checked=on;if(on)c++;
+  document.getElementById(w).classList.toggle('ok',on);const ch=document.querySelector('.chip[data-w="'+w+'"]');if(ch)ch.classList.toggle('ok',on);});
+  document.getElementById('prog').textContent=c+' / '+N+' practised';document.getElementById('bar').style.width=(c/N*100)+'%';}
+document.addEventListener('change',e=>{const i=e.target.closest('.done input');if(!i)return;done[i.dataset.w]=i.checked;
+  try{localStorage.setItem('fet-done-__EP__',JSON.stringify(done))}catch(e){}paint();});
+paint();
+
+/* quiz */
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let right=0,answered=0,total=0;
+function makeQuiz(){
+  const used=new Set(),pick=[];
+  for(const q of shuffle(QUIZ)){if(used.has(q.w))continue;used.add(q.w);pick.push(q);if(pick.length===10)break;}
+  total=pick.length;right=0;answered=0;
+  document.getElementById('qs').innerHTML=pick.map((q,n)=>{
+    const others=shuffle([...new Set(QUIZ.filter(x=>x.w!==q.w).map(x=>x.a.toLowerCase()))]).filter(x=>x!==q.a.toLowerCase()).slice(0,3);
+    const opts=shuffle([q.a.toLowerCase(),...others]);
+    return '<li><p class="q">'+esc(q.q)+'</p><div class="opts" data-ans="'+esc(q.a.toLowerCase())+'">'+opts.map(o=>'<button class="opt" type="button">'+esc(o)+'</button>').join('')+'</div></li>';}).join('');
+  score();}
+function score(){document.getElementById('score').textContent=answered?('Score: '+right+' / '+total+(answered===total?(right===total?' · Perfect!':right>=7?' · Great job!':' · Try the words again, then New questions.'):'')):'Score: 0 / '+total;}
+document.getElementById('qs').addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;const box=b.parentElement;if(box.dataset.done)return;
+  box.dataset.done=1;answered++;const ok=b.textContent===box.dataset.ans;if(ok)right++;
+  box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.textContent===box.dataset.ans)o.classList.add('right');});if(!ok)b.classList.add('wrong');score();});
+document.getElementById('newq').onclick=makeQuiz;makeQuiz();
+
+/* copy comment template */
+document.getElementById('copy').onclick=function(){const t=document.getElementById('tpl').textContent,btn=this;
+  const ok=()=>{btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy',1600);};
+  try{navigator.clipboard.writeText(t).then(ok,()=>{selectTpl();});}catch(e){selectTpl();}};
+function selectTpl(){const r=document.createRange();r.selectNodeContents(document.getElementById('tpl'));const s=getSelection();s.removeAllRanges();s.addRange(r);}
+</script>

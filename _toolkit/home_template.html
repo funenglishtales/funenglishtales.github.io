@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#121F55">
+<title>Fun English Tales Practice</title>
+<meta name="description" content="Free word practice pages for every Fun English Tales episode: hear new words in the Thompson family's voices, see real-life examples, and take a quick quiz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+
+/* Layout: navy story-band header, then one reading column of word cards (picture tile + word + episode line + real-life lines), quiz, comment call. */
+:root{
+  --navy:#1B2F7A; --navy-deep:#121F55; --sun:#FFD21F; --sun-soft:#FFF3C2; --red:#D7262E;
+  --bg:#FBF8EF; --card:#FFFFFF; --ink:#1A1E33; --ink-2:#4D5372; --line:#E6E0CD; --mark:#FFE58A;
+  --good:#1D7A47; --good-soft:#E3F4EA; --bad:#B42318; --bad-soft:#FDECEA;
+  --sp-narrator:#1B2F7A; --sp-grandpa:#8A4B12; --sp-mom:#1D7A47; --sp-mia:#7B2FA3; --sp-leo:#C25B00;
+  --display:"Fredoka","Nunito","Segoe UI",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --navy:#9DB2FF; --navy-deep:#0E1640; --sun:#FFD84A; --sun-soft:#3A3315; --red:#FF7A7F;
+  --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; --mark:#6B5410;
+  --good:#5BD38F; --good-soft:#12301F; --bad:#FF8A80; --bad-soft:#3A1715;
+  --sp-narrator:#9DB2FF; --sp-grandpa:#E3A56A; --sp-mom:#5BD38F; --sp-mia:#D29BF2; --sp-leo:#FFA94D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --navy:#9DB2FF; --navy-deep:#0E1640; --sun:#FFD84A; --sun-soft:#3A3315; --red:#FF7A7F;
+  --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; --mark:#6B5410;
+  --good:#5BD38F; --good-soft:#12301F; --bad:#FF8A80; --bad-soft:#3A1715;
+  --sp-narrator:#9DB2FF; --sp-grandpa:#E3A56A; --sp-mom:#5BD38F; --sp-mia:#D29BF2; --sp-leo:#FFA94D; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
+.band{background:#121F55;color:#fff;padding-top:env(safe-area-inset-top,0px)}
+.band .wrap{padding-block:22px 30px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#FFD21F}
+.band h1{font-size:clamp(30px,6vw,44px);color:#FFD21F;margin-top:18px}
+.band p{color:#E6EAFA;max-width:60ch;margin:10px 0 0}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;padding-block:24px 40px}
+.ep{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit}
+.ep:hover,.ep:focus-visible{border-color:var(--navy)}
+.ep img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#121F55}
+.ep .t{padding:12px 14px 16px;display:grid;gap:4px}
+.ep small{font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);font-size:12px}
+.ep h3{font-size:21px;color:var(--navy)}
+.ep span{color:var(--red);font-weight:800;font-size:15px}
+.foot{text-align:center;color:var(--ink-2);font-size:14px;padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+</style>
+</head>
+<body>
+<header class="band"><div class="wrap">
+  <div class="brand"><svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#FFD21F"/><path d="M10 34c4-2 9-3 14-1 5-2 10-1 14 1V15c-4-2-9-3-14-1-5-2-10-1-14 1z" fill="#fff" stroke="#121F55" stroke-width="2.4" stroke-linejoin="round"/><path d="M24 14v19" stroke="#121F55" stroke-width="2.4"/></svg>Fun English Tales</div>
+  <h1>Word Practice</h1>
+  <p>Watched an episode? Pick it below to practise its new words with the Thompson family's own voices, real-life examples and a quick quiz.</p>
+</div></header>
+<main class="wrap">
+  <div class="list">
+    <!-- EPISODES: mỗi tập mới thêm 1 thẻ <a> ở đầu danh sách -->
+    <a class="ep" href="ep08/"><img src="img/ep08.jpg" alt="Episode 8: Grandpa's Secret Recipe"><div class="t"><small>Episode 8 · 33 words</small><h3>Grandpa's Secret Recipe</h3><span>Start practising →</span></div></a>
+  </div>
+</main>
+<p class="foot">Fun English Tales · Learn English Through Real Family Stories</p>
+</body>
+</html>
