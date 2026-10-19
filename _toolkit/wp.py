@@ -86,6 +86,12 @@ def parse_vocab(path):
             vi = c[4] if len(c) >= 6 else ""
             vo = (c[5] if len(c) >= 6 else c[4]).strip().strip('"“”').strip()
             out.append(dict(word=word, pos=pos, meaning=c[3].strip(), vi=vi, scene=int(c[1]), vo=vo))
+    if not out:   # dạng cũ: "SCENE | TỪ VỰNG | GHI CHÚ" (không có nghĩa tiếng Anh, không có câu VO)
+        for raw in open(path, encoding="utf-8-sig"):
+            c = [x.strip() for x in raw.strip().strip("|").split("|")]
+            if len(c) >= 2 and re.match(r"^\d{3,4}$", c[0]):
+                out.append(dict(word=c[1].replace("*", "").strip(), pos="", meaning="", vi="", scene=int(c[0]), vo="",
+                                note=c[2] if len(c) > 2 else ""))
     if not out:
         sys.exit("NO_VOCAB: không đọc được bảng từ vựng trong file Bước 6.")
     return out
@@ -164,8 +170,10 @@ def cut_clips(mp3, lines, vocab, work):
         rx = re.compile(r"\b" + stem_re(v["word"].split()[0].lower()), re.I)
         full = re.compile(r"\b" + stem_re(v["word"].lower()), re.I) if " " in v["word"] or "-" in v["word"] else rx
         # tìm câu chứa từ ở đúng scene, không có thì tìm scene gần nhất (±8) — bảng Bước 6 cũ có thể lệch số scene
-        near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and full.search(l["text"])),
-                      key=lambda l: abs(l["scene"] - v["scene"]))
+        # ưu tiên câu video nói đúng (khớp ≥ 80%), rồi tới scene gần nhất; ±8 scene trước, không có thì cả tập
+        rank = lambda l: (l["conf"] < 0.8, abs(l["scene"] - v["scene"]))
+        near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and full.search(l["text"])), key=rank) or \
+               sorted((l for l in lines if full.search(l["text"])), key=rank)
         if not near:
             rep.append("KHÔNG CÓ TRONG LỜI  %-18s (Bước 6 ghi scene %d: \"%s\") — từ này không có trong lời thoại tập" %
                        (v["word"], v["scene"], v.get("vo", "")[:60]))
@@ -414,6 +422,16 @@ def cmd_build(a):
         for s in c.get("ex", []):
             if not re.search(r"\b" + word_re(c), s[0], re.I):
                 probs.append("%s: câu '%s' không chứa từ" % (v["word"], s[0]))
+    for v in W:
+        c = C[v["word"]]
+        if c.get("meaning"):
+            v["meaning"] = c["meaning"]
+        if v["source"] == "absent" and c.get("movie"):
+            v["text"] = c["movie"]
+        if not v["meaning"]:
+            probs.append("%s: thiếu nghĩa tiếng Anh (thêm \"meaning\" vào content.json)" % v["word"])
+        if v["source"] == "absent" and not v["text"]:
+            probs.append("%s: từ không có trong lời thoại -> thêm \"movie\" (1 câu ví dụ) vào content.json" % v["word"])
     if probs:
         sys.exit("CONTENT_CHECK_FAIL:\n  " + "\n  ".join(probs))
     # giọng đọc
