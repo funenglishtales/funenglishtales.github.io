@@ -42,12 +42,14 @@ def parse_script(path):
         lines = []
         c = CODE_RE.match(body)
         if c:
-            pre = c.group(1).split("_")[0]
+            pre = re.sub(r"\d+$", "", c.group(1).split("_")[0])
             lines.append((NAMES.get(pre, pre.title()), c.group(2).strip()))
             if c.group(3).strip():
                 lines.append(("Narrator", c.group(3).strip()))
         elif body:
-            lines.append(("Narrator", body))
+            lines.append(("Narrator", body.strip('"').strip()))
+        if scenes and any(x[0] == n for x in scenes):
+            continue                     # scene trùng số (file prompt lặp dòng) -> giữ lần đầu
         scenes.append([n, lines])
     if not scenes:
         sys.exit("NO_SCENES: không đọc được dòng 'Scene NNNN:' nào trong file lời thoại.")
@@ -71,13 +73,14 @@ def parse_vocab(path):
             if m:
                 pos = m.group(1).lower(); word = word[:m.start()].strip()
             vi = c[4] if len(c) >= 6 else ""
-            out.append(dict(word=word, pos=pos, meaning=c[3].strip(), vi=vi, scene=int(c[1])))
+            vo = (c[5] if len(c) >= 6 else c[4]).strip().strip('"“”').strip()
+            out.append(dict(word=word, pos=pos, meaning=c[3].strip(), vi=vi, scene=int(c[1]), vo=vo))
     if not out:
         sys.exit("NO_VOCAB: không đọc được bảng từ vựng trong file Bước 6.")
     return out
 
 
-SELF_RE = re.compile(r"(?:^|[.!?]\s+)(?:An?\s+)?([A-Za-z][a-z-]+(?:\s[a-z]+)?) means ([^—.]+)")
+SELF_RE = re.compile(r"(?:^|[.!?\"]\s*)(?:An?\s+|To\s+)?([A-Za-z][a-z-]+) means ([^—.]+)")
 
 
 def self_explained(scenes, have):
@@ -119,6 +122,14 @@ normw = lambda s: [re.sub(r"[^a-z0-9']", "", x) for x in s.lower().replace("—"
                    if re.sub(r"[^a-z0-9']", "", x)]
 
 
+def word_re(c):
+    """Regex nhận mọi dạng của từ: dạng gốc (+ đuôi biến đổi) hoặc đúng dạng trong phim (in_ep, kể cả bất quy tắc)."""
+    alts = [stem_re(c["base"])]
+    if c.get("in_ep"):
+        alts.append(re.escape(c["in_ep"]))
+    return "(?:" + "|".join(alts) + r")\b" if " " in c["base"] else "(?:" + "|".join(alts) + ")"
+
+
 def stem_re(base):
     if " " in base or "-" in base:
         return re.escape(base)
@@ -133,12 +144,19 @@ def cut_clips(mp3, lines, vocab, work):
     os.makedirs(os.path.join(work, "clips"), exist_ok=True)
     out, rep = [], []
     for v in vocab:
-        cand = [l for l in lines if l["scene"] == v["scene"]]
-        if not cand:
-            rep.append("THIẾU  %-18s scene %d không có trong lời thoại" % (v["word"], v["scene"]))
-            out.append(dict(v, sp="Narrator", text="", conf=0, source="none")); continue
         rx = re.compile(r"\b" + stem_re(v["word"].split()[0].lower()), re.I)
-        pick = next((l for l in cand if rx.search(l["text"])), cand[0])
+        full = re.compile(r"\b" + stem_re(v["word"].lower()), re.I) if " " in v["word"] or "-" in v["word"] else rx
+        # tìm câu chứa từ ở đúng scene, không có thì tìm scene gần nhất (±8) — bảng Bước 6 cũ có thể lệch số scene
+        near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and full.search(l["text"])),
+                      key=lambda l: abs(l["scene"] - v["scene"]))
+        if not near:
+            rep.append("KHÔNG CÓ TRONG LỜI  %-18s (Bước 6 ghi scene %d: \"%s\") — từ này không có trong lời thoại tập" %
+                       (v["word"], v["scene"], v.get("vo", "")[:60]))
+            out.append(dict(v, sp="Narrator", text=v.get("vo", ""), conf=0, source="absent")); continue
+        pick = near[0]
+        if pick["scene"] != v["scene"]:
+            rep.append("LỆCH SCENE %-16s Bước 6 ghi %d, lời thoại ở scene %d" % (v["word"], v["scene"], pick["scene"]))
+            v = dict(v, scene=pick["scene"])
         sents, cur = [], []
         for w in pick["w"]:
             cur.append(w)
@@ -237,8 +255,8 @@ MALE = {"Leo", "Dad", "Grandpa"}
 
 
 # ---------- 6. dựng trang ----------
-def mark(sentence, base, cls="hl"):
-    m = re.search(r"\b" + stem_re(base), sentence, re.I)
+def mark(sentence, pat, cls="hl"):
+    m = re.search(r"\b" + pat, sentence, re.I)
     if not m:
         return esc(sentence), None
     return esc(sentence[:m.start()]) + '<mark class="%s">' % cls + esc(m.group(0)) + "</mark>" + esc(sentence[m.end():]), m.group(0)
@@ -251,7 +269,7 @@ def render(work, W, C, meta, audio, thumb_src):
         wid = "w%02d" % i
         base = c["base"]
         if v["source"] == "episode":
-            rx = re.compile(r"\b" + stem_re(base), re.I)
+            rx = re.compile(r"\b" + word_re(c), re.I)
             parts = base.lower().split()
             toks = []
             for w, s, e in v["words"]:
@@ -259,16 +277,17 @@ def render(work, W, C, meta, audio, thumb_src):
                 toks.append('<span class="tk%s" data-s="%.2f" data-e="%.2f">%s</span>' % (" kw" if kw else "", s, e, esc(w)))
             movie, note = " ".join(toks), "From the episode"
         else:
-            movie, note = mark(v["text"], base)[0], "Read aloud for practice"
+            movie = mark(v["text"], word_re(c))[0]
+            note = "Example sentence" if v["source"] == "absent" else "Read aloud for practice"
         exs = []
         for j, (sent, expl, _d) in enumerate(c["ex"]):
-            h, form = mark(sent, base)
+            h, form = mark(sent, word_re(c))
             exs.append('<li class="ex"><button class="play sm" type="button" data-a="e%02d_%d" aria-label="Listen to this sentence">'
                        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>'
                        '<div><p class="en">%s</p><p class="mean"><span>What it means:</span> %s</p></div></li>' % (i, j, h, esc(expl)))
             if form:
-                quiz.append({"q": re.sub(r"\b" + stem_re(base), "_____", sent, count=1, flags=re.I), "a": form, "w": i})
-        in_ep = ('<span class="form">in the episode: <b>%s</b></span>' % esc(c["in_ep"])) if c.get("in_ep") else ""
+                quiz.append({"q": re.sub(r"\b" + word_re(c), "_____", sent, count=1, flags=re.I), "a": form, "w": i})
+        in_ep = ('<span class="form">in the episode: <b>%s</b></span>' % esc(c["in_ep"])) if c.get("in_ep") and v["source"] != "absent" else ""
         cards.append(f'''
 <article class="card" id="{wid}">
   <div class="pic" aria-hidden="true">{esc(c.get("pic", ""))}</div>
@@ -283,7 +302,7 @@ def render(work, W, C, meta, audio, thumb_src):
     </header>
     <p class="def">{esc(v["meaning"])}</p>
     <section class="movie">
-      <div class="mhead"><span class="tag">{note}</span><span class="spk sp-{v["sp"].lower()}">{esc(v["sp"])}</span><span class="scene">Scene {v["scene"]}</span></div>
+      <div class="mhead"><span class="tag">{note}</span>{"" if v["source"] == "absent" else '<span class="spk sp-%s">%s</span><span class="scene">Scene %d</span>' % (v["sp"].lower(), esc(v["sp"]), v["scene"])}</div>
       <p class="line" data-line="m{i:02d}">{movie}</p>
       <div class="ctl">
         <button class="play" type="button" data-a="m{i:02d}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
@@ -376,7 +395,7 @@ def cmd_build(a):
         if len(c.get("ex", [])) != 2:
             probs.append("%s: cần đúng 2 câu đời sống" % v["word"])
         for s in c.get("ex", []):
-            if not re.search(r"\b" + stem_re(c["base"]), s[0], re.I):
+            if not re.search(r"\b" + word_re(c), s[0], re.I):
                 probs.append("%s: câu '%s' không chứa từ" % (v["word"], s[0]))
     if probs:
         sys.exit("CONTENT_CHECK_FAIL:\n  " + "\n  ".join(probs))
@@ -405,14 +424,42 @@ def cmd_build(a):
                     return True, last
         return False, last
 
-    WORD_TRIES = [("af_heart", 1.0), ("af_heart", 1.1), ("af_nova", 1.0), ("af_bella", 1.0), ("af_sarah", 1.0)]
+    WORD_TRIES = [("af_heart", 1.0), ("af_heart", 1.1), ("af_nova", 1.0), ("af_bella", 1.0), ("af_sarah", 1.0),
+                  ("af_alloy", 1.0), ("am_adam", 1.0)]
+
+    def word_from_carrier(base, out):
+        """Cách cuối: đọc từ trong câu đệm 'Say X once more.', máy xác nhận nghe đúng X, rồi cắt riêng đoạn X."""
+        tmp = out + ".carrier.mp3"
+        for voice, carrier in [(v, c) for c in ("Say %s once more.", "Please %s it.", "I %s it now.", "It is %s now.")
+                               for v in ("af_heart", "af_nova", "af_alloy")]:
+            tts.say(carrier % base, voice, tmp, 1.0)
+            ws = aligner.asr_words(aligner.load(tmp), "en")
+            n = len(base.split())
+            for k in range(len(ws) - n):
+                if flat(" ".join(w["w"] for w in ws[k:k + n])) == flat(base):
+                    a, b = ws[k]["s"], min(ws[k + n]["s"], ws[k + n - 1]["e"] + 0.06)
+                    for _ in range(6):            # cắt rồi nghe lại; còn dính chữ sau thì thu ngắn dần
+                        subprocess.run(["ffmpeg", "-v", "quiet", "-y", "-ss", "%.3f" % max(0, a - 0.03), "-to", "%.3f" % b, "-i", tmp,
+                                        "-af", "afade=t=in:d=0.01,areverse,afade=t=in:d=0.04,areverse,adelay=120,apad=pad_dur=0.2",
+                                        "-ac", "1", "-b:a", "48k", out], check=True)
+                        got = [w["w"] for w in aligner.asr_words(aligner.load(out), "en")]
+                        if len(got) <= n:
+                            break
+                        b -= 0.06
+                    os.remove(tmp)
+                    return True
+        os.remove(tmp)
+        return False
     issues = []
     for i, v in enumerate(W):
         c = C[v["word"]]
         w_txt = c["base"][:1].upper() + c["base"][1:] + "."
         ok, got = say_checked(w_txt, WORD_TRIES, os.path.join(tdir, "w%02d.mp3" % i), True)
         if not ok:
-            issues.append("phát âm '%s' máy nghe ra '%s'" % (c["base"], got))
+            if word_from_carrier(c["base"], os.path.join(tdir, "w%02d.mp3" % i)):
+                print("  '%s': đọc riêng bị méo -> lấy từ câu đệm đã xác nhận đúng" % c["base"])
+            else:
+                issues.append("phát âm '%s' máy nghe ra '%s'" % (c["base"], got))
         for j, ex in enumerate(c["ex"]):
             v1 = "af_heart" if j == 0 else "am_puck"
             alt = "af_nova" if j == 0 else "am_michael"
