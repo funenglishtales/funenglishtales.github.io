@@ -174,6 +174,14 @@ def cut_clips(mp3, lines, vocab, work):
         rank = lambda l: (l["conf"] < 0.8, abs(l["scene"] - v["scene"]))
         near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and full.search(l["text"])), key=rank) or \
                sorted((l for l in lines if full.search(l["text"])), key=rank)
+        if not near and v.get("vo"):
+            # dạng bất quy tắc (crept, caught…): tìm theo câu VO Bước 6 ghi sẵn
+            key = re.sub(r"\W+", " ", v["vo"].lower()).strip()
+            sim = lambda l: difflib.SequenceMatcher(None, key, re.sub(r"\W+", " ", l["text"].lower()).strip()).ratio()
+            near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and sim(l) >= 0.8), key=rank)
+            if near:
+                rep.append("DẠNG KHÁC  %-16s tìm theo câu VO Bước 6 (scene %d) — nhớ ghi \"in_ep\" trong content.json" % (v["word"], near[0]["scene"]))
+                rx = re.compile(r"\w+")  # câu đã khớp nguyên câu VO, chấp nhận
         if not near:
             rep.append("KHÔNG CÓ TRONG LỜI  %-18s (Bước 6 ghi scene %d: \"%s\") — từ này không có trong lời thoại tập" %
                        (v["word"], v["scene"], v.get("vo", "")[:60]))
