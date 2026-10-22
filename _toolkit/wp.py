@@ -27,6 +27,15 @@ esc = lambda s: html.escape(s, quote=True)
 # ---------- 1. lời thoại ----------
 NAMES = {"BROTHER": "Leo", "SISTER": "Mia", "MOM": "Mom", "DAD": "Dad", "GRANDPA": "Grandpa",
          "GRANDMA": "Grandma", "BUDDY": "Buddy", "DOG": "Buddy"}
+
+
+def speaker_name(tag):
+    """[TEACHER2_V1] -> Teacher · [MARCUS_DAD_V1] -> Marcus's Dad · [BROTHER_V5] -> Leo"""
+    t = re.sub(r"_V\d+$", "", tag)
+    parts = [re.sub(r"\d+$", "", x) for x in t.split("_") if x]
+    if len(parts) >= 2 and parts[-1] in ("DAD", "MOM", "GRANDPA", "GRANDMA", "SISTER", "BROTHER"):
+        return parts[0].title() + "'s " + parts[-1].title()
+    return NAMES.get(parts[0], parts[0].title()) if parts else tag.title()
 CODE_RE = re.compile(r'^\[([A-Z0-9_]+)\]:\s*"(.*?)"\s*(.*)$')
 
 
@@ -48,10 +57,17 @@ def parse_script(path):
             pre = body[pos:c.start()].strip()
             if pre:
                 lines.append(("Narrator", pre))
-            code = re.sub(r"\d+$", "", c.group(1).split("_")[0])
-            lines.append((NAMES.get(code, code.title()), c.group(2).strip()))
+            lines.append((speaker_name(c.group(1)), c.group(2).strip()))
             pos = c.end()
         rest = body[pos:].strip()
+        u = re.match(r"^\[([A-Z0-9_]+)\]:\s*(.*)$", rest) if not lines else None
+        if u:                            # dạng không ngoặc kép: [TAG]: lời (kèm ghi chú (whispering))
+            txt = re.sub(r"^\([^)]*\)\s*", "", u.group(2)).strip()
+            if txt:
+                lines.append((speaker_name(u.group(1)), txt))
+            rest = ""
+        elif re.fullmatch(r"\([^)]*\)", rest):
+            rest = ""                    # chỉ là chỉ dẫn diễn xuất, không có lời
         if rest:
             if re.fullmatch(r'"[^"]+"', rest):
                 lines.append(("Character", rest.strip('"').strip()))
@@ -193,7 +209,7 @@ def cut_clips(mp3, lines, vocab, work):
         sents, cur = [], []
         for w in pick["w"]:
             cur.append(w)
-            if re.search(r"[.!?]$", w[0]):
+            if re.search(r"[.!?]$", w[0]) and not re.fullmatch(r"(Mr|Mrs|Ms|Dr|St)\.", w[0]):
                 sents.append(cur); cur = []
         if cur:
             sents.append(cur)
@@ -284,7 +300,7 @@ class TTS:
         os.unlink(tmp)
 
 
-MALE = {"Leo", "Dad", "Grandpa"}
+MALE = {"Leo", "Dad", "Grandpa", "Buddy", "Marcus", "Jayden", "Teacher", "Marcus's Dad"}
 
 
 # ---------- 6. dựng trang ----------
@@ -335,7 +351,7 @@ def render(work, W, C, meta, audio, thumb_src):
     </header>
     <p class="def">{esc(v["meaning"])}</p>
     <section class="movie">
-      <div class="mhead"><span class="tag">{note}</span>{"" if v["source"] == "absent" else '<span class="spk sp-%s">%s</span><span class="scene">Scene %d</span>' % (v["sp"].lower(), esc(v["sp"]), v["scene"])}</div>
+      <div class="mhead"><span class="tag">{note}</span>{"" if v["source"] == "absent" else '<span class="spk sp-%s">%s</span><span class="scene">Scene %d</span>' % (re.sub(r"[^a-z]+", "-", v["sp"].lower()).strip("-"), esc(v["sp"]), v["scene"])}</div>
       <p class="line" data-line="m{i:02d}">{movie}</p>
       <div class="ctl">
         <button class="play" type="button" data-a="m{i:02d}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Listen</button>
