@@ -4,73 +4,82 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#121F55">
-<title>Fun English Tales Practice</title>
-<meta name="description" content="Free word practice pages for every Fun English Tales episode: hear new words in the Thompson family's voices, see real-life examples, and take a quick quiz.">
+<title>Privacy Policy · Fun English Tales</title>
+<meta name="description" content="Privacy policy for the Fun English Tales internal tool and the Fun English Tales Word Practice pages.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
-
-/* Layout: navy story-band header, then one reading column of word cards (picture tile + word + episode line + real-life lines), quiz, comment call. */
 :root{
-  --navy:#1B2F7A; --navy-deep:#121F55; --sun:#FFD21F; --sun-soft:#FFF3C2; --red:#D7262E;
-  --bg:#FBF8EF; --card:#FFFFFF; --ink:#1A1E33; --ink-2:#4D5372; --line:#E6E0CD; --mark:#FFE58A;
-  --good:#1D7A47; --good-soft:#E3F4EA; --bad:#B42318; --bad-soft:#FDECEA;
-  --sp-narrator:#1B2F7A; --sp-grandpa:#8A4B12; --sp-mom:#1D7A47; --sp-mia:#7B2FA3; --sp-leo:#C25B00;
+  --navy:#1B2F7A; --red:#D7262E; --bg:#FBF8EF; --card:#FFFFFF; --ink:#1A1E33; --ink-2:#4D5372; --line:#E6E0CD;
   --display:"Fredoka","Nunito","Segoe UI",system-ui,sans-serif;
   --body:"Nunito","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --navy:#9DB2FF; --navy-deep:#0E1640; --sun:#FFD84A; --sun-soft:#3A3315; --red:#FF7A7F;
-  --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; --mark:#6B5410;
-  --good:#5BD38F; --good-soft:#12301F; --bad:#FF8A80; --bad-soft:#3A1715;
-  --sp-narrator:#9DB2FF; --sp-grandpa:#E3A56A; --sp-mom:#5BD38F; --sp-mia:#D29BF2; --sp-leo:#FFA94D; color-scheme:dark}}
+  --navy:#9DB2FF; --red:#FF7A7F; --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --navy:#9DB2FF; --navy-deep:#0E1640; --sun:#FFD84A; --sun-soft:#3A3315; --red:#FF7A7F;
-  --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; --mark:#6B5410;
-  --good:#5BD38F; --good-soft:#12301F; --bad:#FF8A80; --bad-soft:#3A1715;
-  --sp-narrator:#9DB2FF; --sp-grandpa:#E3A56A; --sp-mom:#5BD38F; --sp-mia:#D29BF2; --sp-leo:#FFA94D; color-scheme:dark}
+  --navy:#9DB2FF; --red:#FF7A7F; --bg:#11131C; --card:#1A1D2A; --ink:#ECEEF7; --ink-2:#AAB0CC; --line:#2D3246; color-scheme:dark}
 
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
-.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2{font-family:var(--display);font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
 .band{background:#121F55;color:#fff;padding-top:env(safe-area-inset-top,0px)}
 .band .wrap{padding-block:22px 30px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#FFD21F}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#FFD21F;text-decoration:none}
 .band h1{font-size:clamp(30px,6vw,44px);color:#FFD21F;margin-top:18px}
-.band p{color:#E6EAFA;max-width:60ch;margin:10px 0 0}
-.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;padding-block:24px 40px}
-.ep{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit}
-.ep:hover,.ep:focus-visible{border-color:var(--navy)}
-.ep img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#121F55}
-.ep .t{padding:12px 14px 16px;display:grid;gap:4px}
-.ep small{font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);font-size:12px}
-.ep h3{font-size:21px;color:var(--navy)}
-.ep span{color:var(--red);font-weight:800;font-size:15px}
+.band p{color:#E6EAFA;margin:10px 0 0}
+main{padding-block:24px 40px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 20px 18px;margin-bottom:16px}
+h2{font-size:22px;color:var(--navy);margin-top:16px}
+p,ul{margin:10px 0 0}
+ul{padding-left:22px}
+li+li{margin-top:6px}
+a{color:var(--navy);font-weight:700;overflow-wrap:anywhere}
+.back{display:inline-block;margin-top:8px;color:var(--red);font-weight:800;text-decoration:none}
 .foot{text-align:center;color:var(--ink-2);font-size:14px;padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
 :focus-visible{outline:3px solid var(--red);outline-offset:2px}
 </style>
 </head>
 <body>
 <header class="band"><div class="wrap">
-  <div class="brand"><svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#FFD21F"/><path d="M10 34c4-2 9-3 14-1 5-2 10-1 14 1V15c-4-2-9-3-14-1-5-2-10-1-14 1z" fill="#fff" stroke="#121F55" stroke-width="2.4" stroke-linejoin="round"/><path d="M24 14v19" stroke="#121F55" stroke-width="2.4"/></svg>Fun English Tales</div>
-  <h1>Word Practice</h1>
-  <p>Watched an episode? Pick it below to practise its new words with the Thompson family's own voices, real-life examples and a quick quiz.</p>
+  <a class="brand" href="../"><svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#FFD21F"/><path d="M10 34c4-2 9-3 14-1 5-2 10-1 14 1V15c-4-2-9-3-14-1-5-2-10-1-14 1z" fill="#fff" stroke="#121F55" stroke-width="2.4" stroke-linejoin="round"/><path d="M24 14v19" stroke="#121F55" stroke-width="2.4"/></svg>Fun English Tales</a>
+  <h1>Privacy Policy</h1>
+  <p>Effective date: October 31, 2026</p>
 </div></header>
 <main class="wrap">
-  <div class="list">
-    <!-- EPISODES -->
-    <a class="ep" href="ep01/" data-ep="1"><img src="img/ep01.jpg" alt="Episode 1: Polar Bears in the Fridge"><div class="t"><small>Episode 1 · 24 words</small><h3>Polar Bears in the Fridge</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep02/" data-ep="2"><img src="img/ep02.jpg" alt="Episode 2: A Surprise from Tokyo"><div class="t"><small>Episode 2 · 17 words</small><h3>A Surprise from Tokyo</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep03/" data-ep="3"><img src="img/ep03.jpg" alt="Episode 3: Dad&#x27;s Dinner Disaster"><div class="t"><small>Episode 3 · 24 words</small><h3>Dad&#x27;s Dinner Disaster</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep04/" data-ep="4"><img src="img/ep04.jpg" alt="Episode 4: Mia&#x27;s First Sleepover Disaster"><div class="t"><small>Episode 4 · 33 words</small><h3>Mia&#x27;s First Sleepover Disaster</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep05/" data-ep="5"><img src="img/ep05.jpg" alt="Episode 5: First Day at a New School"><div class="t"><small>Episode 5 · 34 words</small><h3>First Day at a New School</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep06/" data-ep="6"><img src="img/ep06.jpg" alt="Episode 6: Yuki&#x27;s Care Package"><div class="t"><small>Episode 6 · 33 words</small><h3>Yuki&#x27;s Care Package</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep07/" data-ep="7"><img src="img/ep07.jpg" alt="Episode 7: Buddy Runs Away"><div class="t"><small>Episode 7 · 32 words</small><h3>Buddy Runs Away</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep08/" data-ep="8"><img src="img/ep08.jpg" alt="Episode 8: Grandpa&#x27;s Secret Recipe"><div class="t"><small>Episode 8 · 33 words</small><h3>Grandpa&#x27;s Secret Recipe</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep09/" data-ep="9"><img src="img/ep09.jpg" alt="Episode 9: I Finally Stood Up to the Bully!"><div class="t"><small>Episode 9 · 24 words</small><h3>I Finally Stood Up to the Bully!</h3><span>Start practising →</span></div></a>
-    <a class="ep" href="ep10/" data-ep="10"><img src="img/ep10.jpg" alt="Episode 10: Buddy, the Router… and Midnight?!"><div class="t"><small>Episode 10 · 24 words</small><h3>Buddy, the Router… and Midnight?!</h3><span>Start practising →</span></div></a>
-  </div>
+  <section class="box">
+    <h2>Who we are</h2>
+    <p>Fun English Tales is a YouTube channel that helps people learn English through stories about the Thompson family. This policy covers two things: the channel's internal tool (the Google Cloud app "HappyDollars Youtube") and the Word Practice pages on this website.</p>
+  </section>
+
+  <section class="box">
+    <h2>The internal tool ("HappyDollars Youtube")</h2>
+    <ul>
+      <li>It is a private tool for the Fun English Tales channel. Only the channel owner uses it. It is not offered to the public.</li>
+      <li>It only accesses the channel owner's own Google Drive and Google Sheets. It uses them to save production reports and production logs.</li>
+      <li>It does not access, collect, sell or share data about anyone else.</li>
+      <li>All data stays in the channel owner's own Google Drive and Google Sheets. We do not copy it to other servers.</li>
+      <li>The channel owner can remove the tool's access at any time at <a href="https://myaccount.google.com/permissions">https://myaccount.google.com/permissions</a>.</li>
+    </ul>
+  </section>
+
+  <section class="box">
+    <h2>The Word Practice pages</h2>
+    <ul>
+      <li>The pages do not collect personal information. There are no accounts, no sign-up forms and no analytics or advertising trackers.</li>
+      <li>When you tick a word as "practised", that choice is saved only in your own browser (local storage) so it is still there next time. It is never sent to us. You can clear it by clearing your browser's site data.</li>
+      <li>The pages load fonts from Google Fonts, and the site is hosted on GitHub Pages. Like any website host, these services may see basic technical details such as your IP address. Their own privacy policies apply.</li>
+      <li>Links to our videos open YouTube, where YouTube's privacy policy applies.</li>
+    </ul>
+  </section>
+
+  <section class="box">
+    <h2>Changes and contact</h2>
+    <p>If this policy changes, we will update this page and its effective date.</p>
+    <p>Questions? Email <a href="mailto:happydollarsforme@gmail.com">happydollarsforme@gmail.com</a>.</p>
+  </section>
+
+  <a class="back" href="../">← Back to Word Practice</a>
 </main>
 <p class="foot">Fun English Tales · Learn English Through Real Family Stories</p>
 </body>
