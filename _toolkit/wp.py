@@ -188,16 +188,18 @@ def cut_clips(mp3, lines, vocab, work):
         # tìm câu chứa từ ở đúng scene, không có thì tìm scene gần nhất (±8) — bảng Bước 6 cũ có thể lệch số scene
         # ưu tiên câu video nói đúng (khớp ≥ 80%), rồi tới scene gần nhất; ±8 scene trước, không có thì cả tập
         rank = lambda l: (l["conf"] < 0.8, abs(l["scene"] - v["scene"]))
-        near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and full.search(l["text"])), key=rank) or \
-               sorted((l for l in lines if full.search(l["text"])), key=rank)
+        near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and full.search(l["text"])), key=rank)
         if not near and v.get("vo"):
             # dạng bất quy tắc (crept, caught…): tìm theo câu VO Bước 6 ghi sẵn
             key = re.sub(r"\W+", " ", v["vo"].lower()).strip()
-            sim = lambda l: difflib.SequenceMatcher(None, key, re.sub(r"\W+", " ", l["text"].lower()).strip()).ratio()
+            sim = lambda l: max(difflib.SequenceMatcher(None, key, re.sub(r"\W+", " ", x.lower()).strip()).ratio()
+                                for x in [l["text"]] + re.split(r"(?<=[.!?])\s+", l["text"]))
             near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and sim(l) >= 0.8), key=rank)
             if near:
                 rep.append("DẠNG KHÁC  %-16s tìm theo câu VO Bước 6 (scene %d) — nhớ ghi \"in_ep\" trong content.json" % (v["word"], near[0]["scene"]))
                 rx = re.compile(r"\w+")  # câu đã khớp nguyên câu VO, chấp nhận
+        if not near:
+            near = sorted((l for l in lines if full.search(l["text"])), key=rank)
         if not near:
             rep.append("KHÔNG CÓ TRONG LỜI  %-18s (Bước 6 ghi scene %d: \"%s\") — từ này không có trong lời thoại tập" %
                        (v["word"], v["scene"], v.get("vo", "")[:60]))
@@ -213,19 +215,24 @@ def cut_clips(mp3, lines, vocab, work):
                 sents.append(cur); cur = []
         if cur:
             sents.append(cur)
-        ws = next((x for x in sents if rx.search(" ".join(t[0] for t in x))), pick["w"])
+        cand = [x for x in sents if rx.search(" ".join(t[0] for t in x))] or [pick["w"]]
+        vo_n = normw(v.get("vo", ""))
+        ws = max(cand, key=lambda x: difflib.SequenceMatcher(None, vo_n, normw(" ".join(t[0] for t in x))).ratio()) \
+            if vo_n else cand[0]          # câu lặp/nói vấp -> chọn câu giống câu VO Bước 6 nhất
         text = " ".join(t[0] for t in ws)
         rec = dict(v, sp=pick["sp"], text=text, conf=pick["conf"], source="tts")
         if not rx.search(text):
             rep.append("CẢNH BÁO %-16s không thấy từ trong câu VO scene %d: %s" % (v["word"], v["scene"], text[:70]))
-        if pick["conf"] >= 0.8:
+        if pick["conf"] >= 0.3:          # scene có lời đệm/lặp -> vẫn cắt câu, nhưng nghe lại chặt hơn
+            need = 0.7 if pick["conf"] >= 0.8 else 0.85
             a = max(0.0, ws[0][1] - 0.04); b = ws[-1][2] + 0.18
             f = "clips/s%03d_%s.mp3" % (v["scene"], re.sub(r"\W+", "-", v["word"]))
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", "%.3f" % a, "-to", "%.3f" % b, "-i", mp3,
                             "-ac", "1", "-c:a", "libmp3lame", "-b:a", "64k", os.path.join(work, f)], check=True)
             heard = " ".join(w["w"] for w in aligner.asr_words(aligner.load(os.path.join(work, f)), "en"))
-            r = difflib.SequenceMatcher(None, normw(text), normw(heard)).ratio()
-            if r >= 0.7:
+            r = max(difflib.SequenceMatcher(None, normw(text), normw(heard)).ratio(),     # máy nghe dính chữ ("anderupt")
+                    difflib.SequenceMatcher(None, "".join(normw(text)), "".join(normw(heard))).ratio())
+            if r >= need:
                 rec.update(source="episode", clip=f, words=[[w, round(x - a, 2), round(y - a, 2)] for w, x, y in ws],
                            check=round(r, 2))
             else:
