@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""aligner.py — khớp chữ với giọng bằng máy nhận dạng giọng nói offline (sherpa-onnx). Fun English Tales Word Practice.
+"""aligner.py — aligns text with speech using an offline speech recognizer (sherpa-onnx). Fun English Tales Word Practice.
 
-Cách làm: máy nhận dạng giọng nói (sherpa-onnx, chạy offline) nghe file mp3 và trả về MỐC GIỜ CỦA TỪNG CHỮ
-nó nghe được -> đối chiếu với văn bản người dùng đưa (so khớp chuỗi chữ) -> chữ khớp lấy đúng mốc giờ thật,
-chữ không khớp được nội suy giữa 2 chữ khớp gần nhất -> tinh chỉnh đầu/cuối câu theo năng lượng giọng (hội thoại).
-Kết quả kèm báo cáo độ khớp từng dòng để biết dòng nào còn đáng ngờ.
+How it works: the speech recognizer (sherpa-onnx, offline) listens to the mp3 and returns a TIMESTAMP FOR EACH WORD
+it hears -> compare with the given text (word-sequence matching) -> matched words take the real timestamps,
+unmatched words are interpolated between the nearest matched ones -> line start/end refined by voice energy (dialogue).
+The result includes a per-line match report so doubtful lines are easy to spot.
 
-Ngôn ngữ: en (NeMo Parakeet TDT 0.6B v2) · vi (Zipformer tiếng Việt). Ngôn ngữ khác -> trả None (build dùng bản nháp).
+Languages: en (NeMo Parakeet TDT 0.6B v2) · vi (Zipformer). Other languages -> returns None (build uses a rough draft).
 """
 import os, re, subprocess, difflib, unicodedata
 import numpy as np
@@ -29,14 +29,14 @@ def model_ready(lang):
         return False
     return os.path.isfile(os.path.join(MDIR, MODELS[lang][0], "tokens.txt"))
 
-# ------------------------------------------------------------------ âm thanh
+# ------------------------------------------------------------------ audio
 def load(path):
     r = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"],
                        capture_output=True)
     return np.frombuffer(r.stdout, np.float32).copy()
 
 def voice_band(x):
-    """Bài hát có nhạc nền: giữ dải giọng 120–5000 Hz để máy nghe giọng rõ hơn."""
+    """Songs with background music: keep the 120–5000 Hz voice band so the recognizer hears the voice better."""
     from scipy.signal import butter, sosfilt
     return sosfilt(butter(4, [120, 5000], btype="band", fs=SR, output="sos"), x).astype(np.float32)
 
@@ -46,7 +46,7 @@ def energy(x, hop=0.01):
     return np.convolve(db, np.ones(5) / 5, mode="same")
 
 def chunks(x, maxlen):
-    """Cắt audio thành các đoạn ≤ maxlen giây, cắt đúng chỗ im lặng nhất (không cắt ngang chữ)."""
+    """Split audio into chunks of ≤ maxlen seconds, cutting at the quietest point (never mid-word)."""
     db = energy(x); out = []; a = 0.0; N = len(x) / SR
     while N - a > maxlen:
         lo, hi = int((a + maxlen * 0.6) * 100), int((a + maxlen) * 100)
@@ -55,7 +55,7 @@ def chunks(x, maxlen):
     out.append((a, N))
     return out
 
-# ------------------------------------------------------------------ nhận dạng
+# ------------------------------------------------------------------ recognition
 _REC = {}
 def recognizer(lang):
     if lang in _REC:
@@ -87,7 +87,7 @@ def asr_words(x, lang):
             new = tok.startswith(" ") or tok.startswith("▁") or first
             t = tok.replace("▁", " ").strip()
             if not t or not re.search(r"[\w'’]", t):
-                continue  # bỏ dấu câu: không để dấu câu kéo dài chữ
+                continue  # skip punctuation: don't let it stretch a word
             if new:
                 words.append({"w": t, "s": a + ts, "e": a + ts + dur})
             else:
@@ -95,7 +95,7 @@ def asr_words(x, lang):
             first = False
     return [w for w in words if norm(w["w"])]
 
-# ------------------------------------------------------------------ so khớp chữ
+# ------------------------------------------------------------------ word matching
 NUM = {"0": "zero", "1": "one", "2": "two", "3": "three", "4": "four", "5": "five", "6": "six", "7": "seven",
        "8": "eight", "9": "nine", "10": "ten", "11": "eleven", "12": "twelve", "15": "fifteen", "20": "twenty",
        "30": "thirty", "40": "forty", "45": "forty five", "50": "fifty", "100": "hundred"}
@@ -105,7 +105,7 @@ def norm(w):
     return re.sub(r"[^\w']", "", w).strip("'")
 
 def expand(asr):
-    """'8:30' -> 'eight' 'thirty'; giữ khoảng thời gian, chia đều cho các chữ con."""
+    """'8:30' -> 'eight' 'thirty'; keep the time span, split evenly across the sub-words."""
     out = []
     for w in asr:
         if re.search(r"\d", w["w"]):
@@ -119,7 +119,7 @@ def expand(asr):
     return out
 
 def align_words(text_words, asr):
-    """-> [[start, end, độ_tin]] cho từng chữ văn bản. độ_tin: 1 khớp đúng · 0.5 khớp gần · 0 nội suy."""
+    """-> [[start, end, conf]] for each text word. conf: 1 exact match · 0.5 near match · 0 interpolated."""
     asr = expand(asr)
     A = [norm(w) for w in text_words]; B = [norm(w["w"]) for w in asr]
     res = [None] * len(A)
@@ -146,13 +146,13 @@ def align_words(text_words, asr):
         else:
             s, e = res[p][1], res[q][0]; n = q - p
             res[i] = [s + (e - s) * (i - p - 1) / max(1, n - 1), s + (e - s) * (i - p) / max(1, n - 1), 0.0]
-    for i in range(len(res) - 1):          # chữ sau không được bắt đầu trước chữ trước
+    for i in range(len(res) - 1):          # a word may not start before the previous one
         if res[i + 1][0] < res[i][0] + 0.02:
             res[i + 1][0] = res[i][0] + 0.02
         res[i][1] = max(res[i][0] + 0.05, min(res[i][1], res[i + 1][0] + 0.25))
     return res
 
-# ------------------------------------------------------------------ tinh chỉnh đầu/cuối câu (giọng nói)
+# ------------------------------------------------------------------ refine line start/end (speech)
 def refine(x, res, firsts, lasts):
     db = energy(x); lo, hi = np.percentile(db, 10), np.percentile(db, 97)
     on_thr, off_thr = lo + 0.35 * (hi - lo), lo + 0.30 * (hi - lo)
@@ -176,13 +176,13 @@ def refine(x, res, firsts, lasts):
     return res
 
 def snap_to_voice(x, res):
-    """Chữ nào bị máy đặt mốc vào chỗ IM LẶNG (lỗi hay gặp ở chữ đầu mỗi đoạn) -> dời tới chỗ giọng cất lên."""
+    """Words the recognizer placed in SILENCE (common for the first word of a chunk) -> move to where the voice starts."""
     db = energy(x); lo, hi = np.percentile(db, 10), np.percentile(db, 97); thr = lo + 0.30 * (hi - lo)
     voiced = db > thr; n = len(voiced)
     for i, r in enumerate(res):
         a = int(r[0] * 100)
         if a >= n or voiced[min(n - 1, a):min(n, a + 15)].any():
-            continue                      # đã nằm trên/sát tiếng nói
+            continue                      # already on/next to speech
         limit = int(res[i + 1][0] * 100) if i + 1 < len(res) else n
         nxt = np.where(voiced[a:max(a, min(n, limit))])[0]
         if len(nxt):
@@ -191,11 +191,11 @@ def snap_to_voice(x, res):
             r[0] = new
     return res
 
-# ------------------------------------------------------------------ hàm chính
+# ------------------------------------------------------------------ main function
 def align_lines(audio_path, lines, lang, mode="conv"):
-    """lines: [[chữ, chữ, ...], ...] (chữ hiển thị, đã bỏ tên người nói)
-    -> {'lines': [[[start,end],...] mỗi chữ], 'line_conf': [...], 'matched': x, 'total': n,
-        'asr_text': '...', 'method': 'asr-<lang>'}  hoặc None nếu không có mô hình."""
+    """lines: [[word, word, ...], ...] (display words, speaker names removed)
+    -> {'lines': [[[start,end],...] per word], 'line_conf': [...], 'matched': x, 'total': n,
+        'asr_text': '...', 'method': 'asr-<lang>'}  or None if no model is available."""
     if not model_ready(lang):
         return None
     x = load(audio_path)

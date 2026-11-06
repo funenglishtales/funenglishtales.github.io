@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
-"""wp.py — Fun English Tales · Word Practice: tạo trang luyện từ vựng cho 1 tập.
+"""wp.py — Fun English Tales · Word Practice: builds the vocabulary practice page for one episode.
 
-QUY TRÌNH 2 BƯỚC (giữa 2 bước, Claude viết content.json):
+TWO-STEP WORKFLOW (content.json is written between the steps):
 
-  1) prepare — canh khớp chữ–giọng toàn tập, cắt câu phim chứa từng từ mới, nghe lại để kiểm tra
-     python3 wp.py prepare --ep 8 --title "Grandpa's Secret Recipe" --mp3 tap08.mp3 \
-         --script TRICH_VOICE_Tap08.txt --vocab Buoc6_Tap08.txt --yt https://youtu.be/XXXX \
+  1) prepare — align text and voice for the whole episode, cut the episode line for each new word, re-listen to check
+     python3 wp.py prepare --ep 8 --title "Grandpa's Secret Recipe" --mp3 ep08.mp3 \
+         --script script_ep08.txt --vocab vocab_ep08.txt --yt https://youtu.be/XXXX \
          [--thumb thumbnail.png] --work work/ep08
-     -> work/ep08/words.json, clips/, report.txt, content_todo.json (khung để Claude điền)
+     -> work/ep08/words.json, clips/, report.txt, content_todo.json (template to fill in)
 
-  2) (Claude) viết work/ep08/content.json theo content_todo.json — xem SKILL.md
+  2) write work/ep08/content.json from content_todo.json
 
-  3) build — tạo giọng đọc, dựng trang web (thư mục epNN cho GitHub Pages) + 1 file HTML độc lập (gửi Zalo)
+  3) build — generate voices, build the web page (epNN folder for GitHub Pages) + 1 standalone HTML file (for sharing)
      python3 wp.py build --work work/ep08 --site site_repo
-     -> site_repo/ep08/ (index.html + audio/*.json + img/), site_repo/index.html (thêm/cập nhật thẻ tập),
+     -> site_repo/ep08/ (index.html + audio/*.json + img/), site_repo/index.html (adds/updates the episode card),
         work/ep08/out/FunEnglishTales_TapNN_WordPractice.html
 
-Mô hình: bash setup_models.sh en tts  (một lần mỗi phiên, tải từ GitHub releases của k2-fsa/sherpa-onnx)
+Models: bash setup_models.sh en tts  (once per machine, downloaded from GitHub releases of k2-fsa/sherpa-onnx)
 """
 import argparse, base64, difflib, html, json, os, re, shutil, subprocess, sys, tempfile
 
@@ -24,7 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 esc = lambda s: html.escape(s, quote=True)
 
-# ---------- 1. lời thoại ----------
+# ---------- 1. script ----------
 NAMES = {"BROTHER": "Leo", "SISTER": "Mia", "MOM": "Mom", "DAD": "Dad", "GRANDPA": "Grandpa",
          "GRANDMA": "Grandma", "BUDDY": "Buddy", "DOG": "Buddy"}
 
@@ -40,9 +40,9 @@ CODE_RE = re.compile(r'^\[([A-Z0-9_]+)\]:\s*"(.*?)"\s*(.*)$')
 
 
 def parse_script(path):
-    """File TRICH_VOICE: 'Scene 0001: ...'; lời nhân vật dạng [GRANDPA_V1]: "..." (trước/sau có thể kèm lời kể).
-    - Scene phụ kiểu 0092B được gộp vào scene 92; ghi chú trong ngoặc (BỔ SUNG...) bị bỏ.
-    - Lời trong ngoặc kép không ghi tên -> người nói 'Character'."""
+    """Script file: 'Scene 0001: ...'; character lines look like [GRANDPA_V1]: "..." (narration may come before/after).
+    - Sub-scenes like 0092B are merged into scene 92; notes in parentheses are dropped.
+    - Quoted lines with no tag -> speaker 'Character'."""
     scenes = []
     for raw in open(path, encoding="utf-8-sig"):
         m = re.match(r"^\s*Scene\s+(\d+)([A-Za-z]?)\s*(?:\([^)]*\))?\s*:\s*(.*)$", raw.strip())
@@ -50,7 +50,7 @@ def parse_script(path):
             continue
         n, sub = int(m.group(1)), m.group(2)
         body = re.sub(r"\s+", " ", m.group(3).replace("“", '"').replace("”", '"')).strip()
-        body = re.sub(r"^\([^)]*[^\x00-\x7f][^)]*\)\s*", "", body)     # ghi chú tiếng Việt đầu dòng
+        body = re.sub(r"^\([^)]*[^\x00-\x7f][^)]*\)\s*", "", body)     # non-ASCII production note at line start
         lines = []
         pos = 0
         for c in re.finditer(r'\[([A-Z0-9_]+)\]:\s*"(.*?)"', body):
@@ -61,13 +61,13 @@ def parse_script(path):
             pos = c.end()
         rest = body[pos:].strip()
         u = re.match(r"^\[([A-Z0-9_]+)\]:\s*(.*)$", rest) if not lines else None
-        if u:                            # dạng không ngoặc kép: [TAG]: lời (kèm ghi chú (whispering))
+        if u:                            # unquoted form: [TAG]: line (with a note like (whispering))
             txt = re.sub(r"^\([^)]*\)\s*", "", u.group(2)).strip()
             if txt:
                 lines.append((speaker_name(u.group(1)), txt))
             rest = ""
         elif re.fullmatch(r"\([^)]*\)", rest):
-            rest = ""                    # chỉ là chỉ dẫn diễn xuất, không có lời
+            rest = ""                    # acting direction only, no spoken line
         if rest:
             if re.fullmatch(r'"[^"]+"', rest):
                 lines.append(("Character", rest.strip('"').strip()))
@@ -76,20 +76,20 @@ def parse_script(path):
         if sub and scenes and scenes[-1][0] == n:
             scenes[-1][1].extend(lines); continue
         if any(x[0] == n for x in scenes):
-            continue                     # scene trùng số (file prompt lặp dòng) -> giữ lần đầu
+            continue                     # duplicate scene number (repeated prompt line) -> keep the first
         scenes.append([n, lines])
     if not scenes:
-        sys.exit("NO_SCENES: không đọc được dòng 'Scene NNNN:' nào trong file lời thoại.")
+        sys.exit("NO_SCENES: no 'Scene NNNN:' lines found in the script file.")
     return scenes
 
 
-# ---------- 2. danh sách từ mới (Bước 6) ----------
+# ---------- 2. new-word list (vocab table) ----------
 POS_RE = re.compile(r"\s*\((n|v|adj|adv|phr|phrase|phrasal verb|idiom|noun|verb|adjective|adverb)\.?\)\s*$", re.I)
 
 
 def parse_vocab(path):
-    """Bảng markdown Bước 6. Cột: # | Scene | Từ (nguyên mẫu) [+ loại từ] | Nghĩa tiếng Anh | (Nghĩa TV) | Câu VO.
-    Chấp nhận bảng 5 cột (cũ) và 6 cột (mới)."""
+    """Markdown vocab table. Columns: # | Scene | Word (base form) [+ part of speech] | English meaning | (translation) | VO line.
+    Accepts the 5-column (old) and 6-column (new) tables."""
     out = []
     for raw in open(path, encoding="utf-8-sig"):
         c = [x.strip() for x in raw.strip().strip("|").split("|")]
@@ -102,14 +102,14 @@ def parse_vocab(path):
             vi = c[4] if len(c) >= 6 else ""
             vo = (c[5] if len(c) >= 6 else c[4]).strip().strip('"“”').strip()
             out.append(dict(word=word, pos=pos, meaning=c[3].strip(), vi=vi, scene=int(c[1]), vo=vo))
-    if not out:   # dạng cũ: "SCENE | TỪ VỰNG | GHI CHÚ" (không có nghĩa tiếng Anh, không có câu VO)
+    if not out:   # old form: "SCENE | WORD | NOTE" (no English meaning, no VO line)
         for raw in open(path, encoding="utf-8-sig"):
             c = [x.strip() for x in raw.strip().strip("|").split("|")]
             if len(c) >= 2 and re.match(r"^\d{3,4}$", c[0]):
                 out.append(dict(word=c[1].replace("*", "").strip(), pos="", meaning="", vi="", scene=int(c[0]), vo="",
                                 note=c[2] if len(c) > 2 else ""))
     if not out:
-        sys.exit("NO_VOCAB: không đọc được bảng từ vựng trong file Bước 6.")
+        sys.exit("NO_VOCAB: no vocab table found in the vocab file.")
     return out
 
 
@@ -118,7 +118,7 @@ SELF_RE = re.compile(r"(?:^|[.!?\"]\s*)(?:An?\s+|To\s+)?([A-Za-z][a-z-]+) means 
 
 
 def self_explained(scenes, have):
-    """Câu VO tự giải nghĩa 'X means Y' -> thêm X vào danh sách (nếu chưa có)."""
+    """Self-explaining VO line 'X means Y' -> add X to the list (if not there yet)."""
     out = []
     for n, ls in scenes:
         for sp, tx in ls:
@@ -137,11 +137,11 @@ def self_explained(scenes, have):
     return out
 
 
-# ---------- 3. canh khớp toàn tập ----------
+# ---------- 3. whole-episode alignment ----------
 def align_episode(mp3, scenes):
     import aligner
     if not aligner.model_ready("en"):
-        sys.exit("NO_MODEL: chạy  bash setup_models.sh en tts  trước.")
+        sys.exit("NO_MODEL: run  bash setup_models.sh en tts  first.")
     lines, meta = [], []
     for n, ls in scenes:
         for sp, tx in ls:
@@ -149,20 +149,20 @@ def align_episode(mp3, scenes):
                 lines.append(tx.split()); meta.append((n, sp, tx))
     al = aligner.align_lines(mp3, lines, "en", "conv")
     if not al or al["lines"] is None:
-        sys.exit("ALIGN_FAIL: máy nhận dạng không nghe được audio này.")
+        sys.exit("ALIGN_FAIL: the recognizer could not hear this audio.")
     out = [dict(scene=n, sp=sp, text=tx, conf=al["line_conf"][i],
                 w=[[w, s, e] for w, (s, e) in zip(lines[i], al["lines"][i])]) for i, (n, sp, tx) in enumerate(meta)]
     return out, al["matched"], al["total"]
 
 
-# ---------- 4. cắt câu phim + kiểm tra ----------
+# ---------- 4. cut episode lines + check ----------
 key = lambda s: re.sub(r"[^a-z' -]", "", s.lower())
 normw = lambda s: [re.sub(r"[^a-z0-9']", "", x) for x in s.lower().replace("—", " ").replace("-", "").split()
                    if re.sub(r"[^a-z0-9']", "", x)]
 
 
 def word_re(c):
-    """Regex nhận mọi dạng của từ: dạng gốc (+ đuôi biến đổi) hoặc đúng dạng trong phim (in_ep, kể cả bất quy tắc)."""
+    """Regex matching any form of the word: base form (+ endings) or the exact episode form (in_ep, irregular forms included)."""
     alts = [stem_re(c["base"])]
     if c.get("in_ep"):
         alts.append(re.escape(c["in_ep"]))
@@ -185,28 +185,28 @@ def cut_clips(mp3, lines, vocab, work):
     for v in vocab:
         rx = re.compile(r"\b" + stem_re(v["word"].split()[0].lower()), re.I)
         full = re.compile(r"\b" + stem_re(v["word"].lower()), re.I) if " " in v["word"] or "-" in v["word"] else rx
-        # tìm câu chứa từ ở đúng scene, không có thì tìm scene gần nhất (±8) — bảng Bước 6 cũ có thể lệch số scene
-        # ưu tiên câu video nói đúng (khớp ≥ 80%), rồi tới scene gần nhất; ±8 scene trước, không có thì cả tập
+        # find the line with the word in the given scene, else the nearest scene (±8) — old vocab tables may have shifted scene numbers
+        # prefer lines the video says correctly (match ≥ 80%), then the nearest scene; ±8 scenes first, else the whole episode
         rank = lambda l: (l["conf"] < 0.8, abs(l["scene"] - v["scene"]))
         near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and full.search(l["text"])), key=rank)
         if not near and v.get("vo"):
-            # dạng bất quy tắc (crept, caught…): tìm theo câu VO Bước 6 ghi sẵn
+            # irregular forms (crept, caught…): search by the VO line given in the vocab table
             key = re.sub(r"\W+", " ", v["vo"].lower()).strip()
             sim = lambda l: max(difflib.SequenceMatcher(None, key, re.sub(r"\W+", " ", x.lower()).strip()).ratio()
                                 for x in [l["text"]] + re.split(r"(?<=[.!?])\s+", l["text"]))
             near = sorted((l for l in lines if abs(l["scene"] - v["scene"]) <= 8 and sim(l) >= 0.8), key=rank)
             if near:
-                rep.append("DẠNG KHÁC  %-16s tìm theo câu VO Bước 6 (scene %d) — nhớ ghi \"in_ep\" trong content.json" % (v["word"], near[0]["scene"]))
-                rx = re.compile(r"\w+")  # câu đã khớp nguyên câu VO, chấp nhận
+                rep.append("OTHER FORM %-16s found via the vocab-table VO line (scene %d) — remember to set \"in_ep\" in content.json" % (v["word"], near[0]["scene"]))
+                rx = re.compile(r"\w+")  # line matched the whole VO line, accept
         if not near:
             near = sorted((l for l in lines if full.search(l["text"])), key=rank)
         if not near:
-            rep.append("KHÔNG CÓ TRONG LỜI  %-18s (Bước 6 ghi scene %d: \"%s\") — từ này không có trong lời thoại tập" %
+            rep.append("NOT IN SCRIPT  %-18s (vocab table says scene %d: \"%s\") — this word is not in the episode script" %
                        (v["word"], v["scene"], v.get("vo", "")[:60]))
             out.append(dict(v, sp="Narrator", text=v.get("vo", ""), conf=0, source="absent")); continue
         pick = near[0]
         if pick["scene"] != v["scene"]:
-            rep.append("LỆCH SCENE %-16s Bước 6 ghi %d, lời thoại ở scene %d" % (v["word"], v["scene"], pick["scene"]))
+            rep.append("SCENE SHIFT %-16s vocab table says %d, line is in scene %d" % (v["word"], v["scene"], pick["scene"]))
             v = dict(v, scene=pick["scene"])
         sents, cur = [], []
         for w in pick["w"]:
@@ -218,27 +218,27 @@ def cut_clips(mp3, lines, vocab, work):
         cand = [x for x in sents if rx.search(" ".join(t[0] for t in x))] or [pick["w"]]
         vo_n = normw(v.get("vo", ""))
         ws = max(cand, key=lambda x: difflib.SequenceMatcher(None, vo_n, normw(" ".join(t[0] for t in x))).ratio()) \
-            if vo_n else cand[0]          # câu lặp/nói vấp -> chọn câu giống câu VO Bước 6 nhất
+            if vo_n else cand[0]          # repeated/stumbled line -> pick the sentence closest to the vocab-table VO line
         text = " ".join(t[0] for t in ws)
         rec = dict(v, sp=pick["sp"], text=text, conf=pick["conf"], source="tts")
         if not rx.search(text):
-            rep.append("CẢNH BÁO %-16s không thấy từ trong câu VO scene %d: %s" % (v["word"], v["scene"], text[:70]))
-        if pick["conf"] >= 0.3:          # scene có lời đệm/lặp -> vẫn cắt câu, nhưng nghe lại chặt hơn
+            rep.append("WARNING %-16s word not found in the VO line of scene %d: %s" % (v["word"], v["scene"], text[:70]))
+        if pick["conf"] >= 0.3:          # scene with fillers/repeats -> still cut the line, but re-check more strictly
             need = 0.7 if pick["conf"] >= 0.8 else 0.85
             a = max(0.0, ws[0][1] - 0.04); b = ws[-1][2] + 0.18
             f = "clips/s%03d_%s.mp3" % (v["scene"], re.sub(r"\W+", "-", v["word"]))
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", "%.3f" % a, "-to", "%.3f" % b, "-i", mp3,
                             "-ac", "1", "-c:a", "libmp3lame", "-b:a", "64k", os.path.join(work, f)], check=True)
             heard = " ".join(w["w"] for w in aligner.asr_words(aligner.load(os.path.join(work, f)), "en"))
-            r = max(difflib.SequenceMatcher(None, normw(text), normw(heard)).ratio(),     # máy nghe dính chữ ("anderupt")
+            r = max(difflib.SequenceMatcher(None, normw(text), normw(heard)).ratio(),     # recognizer merges words ("anderupt")
                     difflib.SequenceMatcher(None, "".join(normw(text)), "".join(normw(heard))).ratio())
             if r >= need:
                 rec.update(source="episode", clip=f, words=[[w, round(x - a, 2), round(y - a, 2)] for w, x, y in ws],
                            check=round(r, 2))
             else:
-                rep.append("GIỌNG TẠO %-15s scene %d: đoạn phim nghe ra khác lời (%.0f%%): %s" % (v["word"], v["scene"], r * 100, heard[:70]))
+                rep.append("TTS VOICE %-15s scene %d: episode clip sounds different from the line (%.0f%%): %s" % (v["word"], v["scene"], r * 100, heard[:70]))
         else:
-            rep.append("GIỌNG TẠO %-15s scene %d: video không nói đúng câu trong kịch bản (khớp %.0f%%)" % (v["word"], v["scene"], pick["conf"] * 100))
+            rep.append("TTS VOICE %-15s scene %d: the video does not say the script line (match %.0f%%)" % (v["word"], v["scene"], pick["conf"] * 100))
         out.append(rec)
     return out, rep
 
@@ -252,10 +252,10 @@ def cmd_prepare(a):
     vocab = parse_vocab(a.vocab)
     vocab += self_explained(scenes, {v["word"].lower() for v in vocab})
     vocab.sort(key=lambda v: v["scene"])
-    print("Lời thoại: %d scene · Từ mới: %d (%d tự giải nghĩa)" % (len(scenes), len(vocab), sum(1 for v in vocab if v.get("selfx"))), flush=True)
-    print("Đang canh khớp toàn tập (vài phút)...", flush=True)
+    print("Script: %d scenes · New words: %d (%d self-explained)" % (len(scenes), len(vocab), sum(1 for v in vocab if v.get("selfx"))), flush=True)
+    print("Aligning the whole episode (a few minutes)...", flush=True)
     lines, m, t = align_episode(mp3, scenes)
-    print("Khớp toàn tập: %d/%d chữ (%.0f%%)" % (m, t, m / t * 100), flush=True)
+    print("Whole-episode match: %d/%d words (%.0f%%)" % (m, t, m / t * 100), flush=True)
     words, rep = cut_clips(mp3, lines, vocab, work)
     if a.thumb:
         from PIL import Image
@@ -264,29 +264,29 @@ def cmd_prepare(a):
     json.dump(meta, open(os.path.join(work, "meta.json"), "w"), ensure_ascii=False, indent=1)
     json.dump(words, open(os.path.join(work, "words.json"), "w"), ensure_ascii=False, indent=1)
     weak = [l for l in lines if l["conf"] < 0.6]
-    todo = {v["word"]: {"base": v["word"], "pos": v["pos"] or "?", "in_ep": "(dạng trong phim nếu khác nguyên mẫu, không thì xoá)",
-                        "pic": "2 emoji", "ex": [["câu đời sống 1", "giải nghĩa đơn giản", "mô tả ảnh"],
-                                                 ["câu đời sống 2", "giải nghĩa đơn giản", "mô tả ảnh"]],
+    todo = {v["word"]: {"base": v["word"], "pos": v["pos"] or "?", "in_ep": "(episode form if different from the base form, otherwise delete)",
+                        "pic": "2 emoji", "ex": [["real-life sentence 1", "simple explanation", "picture description"],
+                                                 ["real-life sentence 2", "simple explanation", "picture description"]],
                         "_meaning": v["meaning"], "_movie": v["text"]} for v in words}
     json.dump(todo, open(os.path.join(work, "content_todo.json"), "w"), ensure_ascii=False, indent=1)
-    lines_rep = ["TẬP %s · %s" % (a.ep, a.title), "Khớp toàn tập: %d/%d chữ (%.0f%%)" % (m, t, m / t * 100),
-                 "Từ mới: %d · câu phim giọng thật: %d · giọng tạo: %d" % (len(words), sum(1 for w in words if w["source"] == "episode"),
+    lines_rep = ["EPISODE %s · %s" % (a.ep, a.title), "Whole-episode match: %d/%d words (%.0f%%)" % (m, t, m / t * 100),
+                 "New words: %d · real-voice episode lines: %d · TTS: %d" % (len(words), sum(1 for w in words if w["source"] == "episode"),
                                                                        sum(1 for w in words if w["source"] != "episode")), ""] + rep
     if weak:
-        lines_rep += ["", "Scene có lời trong video KHÁC kịch bản (khớp < 60%) — chỉ ảnh hưởng nếu có từ mới ở đó:"] + \
+        lines_rep += ["", "Scenes where the video DIFFERS from the script (match < 60%) — only matters if a new word is there:"] + \
                      ["  scene %d (%s): %s" % (l["scene"], l["sp"], l["text"][:70]) for l in weak]
     open(os.path.join(work, "report.txt"), "w", encoding="utf-8").write("\n".join(lines_rep) + "\n")
     print("\n".join(lines_rep))
-    print("PREPARE_OK %s · tiếp theo: viết %s/content.json rồi chạy build" % (work, work))
+    print("PREPARE_OK %s · next: write %s/content.json, then run build" % (work, work))
 
 
-# ---------- 5. giọng đọc (Kokoro) ----------
+# ---------- 5. voices (Kokoro) ----------
 class TTS:
     def __init__(self):
         import onnxruntime as ort, sherpa_onnx
         K = os.path.join(os.environ.get("FET_MODELS", os.path.expanduser("~/models")), "kokoro-multi-lang-v1_0")
         if not os.path.exists(os.path.join(K, "voices.bin")):
-            sys.exit("NO_TTS_MODEL: chạy  bash setup_models.sh tts  trước.")
+            sys.exit("NO_TTS_MODEL: run  bash setup_models.sh tts  first.")
         names = ort.InferenceSession(os.path.join(K, "model.onnx"), providers=["CPUExecutionProvider"]) \
             .get_modelmeta().custom_metadata_map["speaker_names"].split(",")
         self.sid = {n: i for i, n in enumerate(names)}
@@ -310,7 +310,7 @@ class TTS:
 MALE = {"Leo", "Dad", "Grandpa", "Buddy", "Marcus", "Jayden", "Teacher", "Marcus's Dad"}
 
 
-# ---------- 6. dựng trang ----------
+# ---------- 6. build the page ----------
 def mark(sentence, pat, cls="hl"):
     m = re.search(r"\b" + pat, sentence, re.I)
     if not m:
@@ -400,7 +400,7 @@ def wrap(body, desc):
 
 
 def cta_box(kind, yt):
-    """Khung 'Your turn' kêu gọi bình luận — đặt ở đầu, giữa danh sách và cuối trang."""
+    """'Your turn' comment call-out — placed at the top, mid-list and at the end."""
     head = {"top": ("Use a word, share your sentence", "Learn a word below, then use it in a sentence about your own life and post it under the episode. We read them all!"),
             "mid": ("Halfway there! Try one word now", "Pick a word you just practised and write your own sentence in the YouTube comments."),
             "end": ("Your turn: write a sentence", "Pick one word from today and use it in a sentence about your own life. Post it in the comments under the episode. We read them all!")}[kind]
@@ -416,7 +416,7 @@ HOME_CARD = ('<a class="ep" href="ep{nn}/" data-ep="{n}"><img src="img/ep{nn}.jp
 
 
 def update_home(site, meta, n_words, thumb):
-    """Thêm/cập nhật thẻ tập trên trang chủ, sắp theo số tập tăng dần."""
+    """Add/update the episode card on the home page, sorted by episode number."""
     home = os.path.join(site, "index.html")
     if not os.path.exists(home):
         shutil.copy(os.path.join(HERE, "home_template.html"), home)
@@ -440,19 +440,19 @@ def cmd_build(a):
     W = json.load(open(os.path.join(work, "words.json")))
     cpath = os.path.join(work, "content.json")
     if not os.path.exists(cpath):
-        sys.exit("NO_CONTENT: chưa có %s (Claude viết theo content_todo.json)." % cpath)
+        sys.exit("NO_CONTENT: %s is missing (write it from content_todo.json)." % cpath)
     C = json.load(open(cpath, encoding="utf-8"))
     miss = [v["word"] for v in W if v["word"] not in C]
     if miss:
-        sys.exit("CONTENT_MISSING: content.json thiếu: " + ", ".join(miss))
+        sys.exit("CONTENT_MISSING: content.json lacks: " + ", ".join(miss))
     probs = []
     for v in W:
         c = C[v["word"]]
         if len(c.get("ex", [])) != 2:
-            probs.append("%s: cần đúng 2 câu đời sống" % v["word"])
+            probs.append("%s: needs exactly 2 real-life sentences" % v["word"])
         for s in c.get("ex", []):
             if not re.search(r"\b" + word_re(c), s[0], re.I):
-                probs.append("%s: câu '%s' không chứa từ" % (v["word"], s[0]))
+                probs.append("%s: sentence '%s' does not contain the word" % (v["word"], s[0]))
     for v in W:
         c = C[v["word"]]
         if c.get("meaning"):
@@ -460,15 +460,15 @@ def cmd_build(a):
         if v["source"] == "absent" and c.get("movie"):
             v["text"] = c["movie"]
         if not v["meaning"]:
-            probs.append("%s: thiếu nghĩa tiếng Anh (thêm \"meaning\" vào content.json)" % v["word"])
+            probs.append("%s: missing English meaning (add \"meaning\" to content.json)" % v["word"])
         if v["source"] == "absent" and not v["text"]:
-            probs.append("%s: từ không có trong lời thoại -> thêm \"movie\" (1 câu ví dụ) vào content.json" % v["word"])
+            probs.append("%s: word is not in the script -> add \"movie\" (1 example sentence) to content.json" % v["word"])
     if probs:
         sys.exit("CONTENT_CHECK_FAIL:\n  " + "\n  ".join(probs))
-    # giọng đọc
+    # voices
     tdir = os.path.join(work, "tts"); os.makedirs(tdir, exist_ok=True)
     if a.skip_tts:
-        print("TTS: dùng lại file giọng đọc có sẵn trong %s" % tdir)
+        print("TTS: reusing existing voice files in %s" % tdir)
     tts = None if a.skip_tts else TTS()
     import aligner
     flat = lambda x: re.sub(r"[^a-z]", "", x.lower())
@@ -477,7 +477,7 @@ def cmd_build(a):
         return " ".join(w["w"] for w in aligner.asr_words(aligner.load(p), "en"))
 
     def say_checked(text, tries, out, exact):
-        """Đọc rồi cho máy nghe lại; sai (thêm 'a', đọc méo...) thì đổi tốc độ/giọng. Trả về (ok, nghe được)."""
+        """Speak, then re-listen; if wrong (extra 'a', garbled...) change speed/voice. Returns (ok, heard)."""
         last = ""
         for voice, speed in tries:
             tts.say(text, voice, out, speed)
@@ -492,12 +492,12 @@ def cmd_build(a):
                     return True, last
         return False, last
 
-    # Giọng nam Michael cho phát âm từ đơn (chị duyệt 19/10/2026: giọng nữ Heart đọc từ đơn hay chèn tiếng "a" phía trước)
+    # Male voice Michael for single words (approved 2026-10-19: the female Heart voice often adds an "a" before single words)
     WORD_TRIES = [("am_michael", 1.0), ("am_michael", 1.1), ("am_adam", 1.0), ("am_michael", 0.95),
                   ("af_heart", 1.0), ("af_nova", 1.0)]
 
     def word_from_carrier(base, out):
-        """Cách cuối: đọc từ trong câu đệm 'Say X once more.', máy xác nhận nghe đúng X, rồi cắt riêng đoạn X."""
+        """Last resort: speak the word in a carrier 'Say X once more.', confirm X is heard correctly, then cut out X."""
         tmp = out + ".carrier.mp3"
         for voice, carrier in [(v, c) for c in ("Say %s once more.", "Please %s it.", "I %s it now.", "It is %s now.")
                                for v in ("am_michael", "am_adam", "af_heart")]:
@@ -507,7 +507,7 @@ def cmd_build(a):
             for k in range(len(ws) - n):
                 if flat(" ".join(w["w"] for w in ws[k:k + n])) == flat(base):
                     a, b = ws[k]["s"], min(ws[k + n]["s"], ws[k + n - 1]["e"] + 0.06)
-                    for _ in range(6):            # cắt rồi nghe lại; còn dính chữ sau thì thu ngắn dần
+                    for _ in range(6):            # cut, then re-listen; if the next word still bleeds in, shorten step by step
                         subprocess.run(["ffmpeg", "-v", "quiet", "-y", "-ss", "%.3f" % max(0, a - 0.03), "-to", "%.3f" % b, "-i", tmp,
                                         "-af", "afade=t=in:d=0.01,areverse,afade=t=in:d=0.04,areverse,adelay=120,apad=pad_dur=0.2",
                                         "-ac", "1", "-b:a", "48k", out], check=True)
@@ -526,25 +526,25 @@ def cmd_build(a):
         ok, got = say_checked(w_txt, WORD_TRIES, os.path.join(tdir, "w%02d.mp3" % i), True)
         if not ok:
             if word_from_carrier(c["base"], os.path.join(tdir, "w%02d.mp3" % i)):
-                print("  '%s': đọc riêng bị méo -> lấy từ câu đệm đã xác nhận đúng" % c["base"])
+                print("  '%s': single-word reading was garbled -> taken from a verified carrier sentence" % c["base"])
             else:
-                issues.append("phát âm '%s' máy nghe ra '%s'" % (c["base"], got))
+                issues.append("word '%s' heard as '%s'" % (c["base"], got))
         for j, ex in enumerate(c["ex"]):
             v1 = "af_heart" if j == 0 else "am_puck"
             alt = "af_nova" if j == 0 else "am_michael"
             ok, got = say_checked(ex[0], [(v1, 0.95), (v1, 1.0), (alt, 1.0)], os.path.join(tdir, "e%02d_%d.mp3" % (i, j)), False)
             if not ok:
-                issues.append("câu '%s' máy nghe ra '%s'" % (ex[0], got))
+                issues.append("sentence '%s' heard as '%s'" % (ex[0], got))
         if v["source"] != "episode" and v["text"]:
             v1 = "am_puck" if v["sp"] in MALE else "af_heart"
             ok, got = say_checked(v["text"], [(v1, 0.95), (v1, 1.0), ("am_michael" if v["sp"] in MALE else "af_nova", 1.0)],
                                   os.path.join(tdir, "m%02d.mp3" % i), False)
             if not ok:
-                issues.append("câu phim '%s' máy nghe ra '%s'" % (v["text"], got))
+                issues.append("episode line '%s' heard as '%s'" % (v["text"], got))
     if issues:
-        print("TTS_CHECK: %d chỗ cần nghe lại:\n  " % len(issues) + "\n  ".join(issues))
+        print("TTS_CHECK: %d items to listen to again:\n  " % len(issues) + "\n  ".join(issues))
     else:
-        print("TTS_CHECK: tất cả giọng đọc đã được máy nghe lại, đúng chữ.")
+        print("TTS_CHECK: all generated voices were re-listened to and match the text.")
     print("TTS_OK", flush=True)
 
     def files_for(i, v):
@@ -558,7 +558,7 @@ def cmd_build(a):
     desc = "Practise the %d new words from Fun English Tales Episode %d with the Thompson family's own voices, real-life examples and a quick quiz." % (len(W), meta["ep"])
     nn = "%02d" % meta["ep"]
 
-    # (a) 1 file độc lập (gửi Zalo / Messenger)
+    # (a) 1 standalone file (for sharing in chat apps)
     aud = {}
     for i, v in enumerate(W):
         for k, p in files_for(i, v).items():
@@ -570,7 +570,7 @@ def cmd_build(a):
     open(single, "w", encoding="utf-8").write(wrap(page, desc))
     open(os.path.join(work, "out", "artifact.html"), "w", encoding="utf-8").write(page)
 
-    # (b) trang web (GitHub Pages): âm thanh gộp theo từng từ, tải khi cần
+    # (b) web page (GitHub Pages): audio bundled per word, loaded on demand
     if a.site:
         epdir = os.path.join(a.site, "ep" + nn)
         shutil.rmtree(epdir, ignore_errors=True)
@@ -590,12 +590,12 @@ def cmd_build(a):
         open(os.path.join(epdir, "index.html"), "w", encoding="utf-8").write(wrap(page, desc))
         update_home(a.site, meta, len(W), thumb)
         nfiles = sum(len(f) for _, _, f in os.walk(epdir))
-        print("WEB_OK %s (%d file) · trang chủ đã cập nhật" % (epdir, nfiles))
-    print("SINGLE_OK %s (%.1f MB) · %d từ · %d câu quiz" % (single, os.path.getsize(single) / 1e6, len(W), nq))
+        print("WEB_OK %s (%d files) · home page updated" % (epdir, nfiles))
+    print("SINGLE_OK %s (%.1f MB) · %d words · %d quiz questions" % (single, os.path.getsize(single) / 1e6, len(W), nq))
 
 
 def cmd_extract(a):
-    """File prompt 120 scene (.txt/.docx) -> file lời thoại dạng TRICH_VOICE (lấy phần [VO: ...] của mỗi scene)."""
+    """120-scene prompt file (.txt/.docx) -> script file (takes the [VO: ...] part of each scene)."""
     src = a.prompts
     if src.lower().endswith(".docx"):
         txt = subprocess.run(["pandoc", src, "-t", "plain", "--wrap=none"], capture_output=True, text=True, check=True).stdout
@@ -608,7 +608,7 @@ def cmd_extract(a):
             continue
         n = m.group(1)
         if n in seen:
-            continue                      # file prompt lặp dòng -> giữ lần đầu
+            continue                      # repeated prompt line -> keep the first
         seen.add(n)
         i = line.find("[VO:")
         if i < 0:
@@ -617,16 +617,16 @@ def cmd_extract(a):
         while j < len(s2) and depth:
             depth += {"[": 1, "]": -1}.get(s2[j], 0); j += 1
         vo = s2[:j - 1].strip()
-        # thẻ nhân vật nằm giữa lời kể (vd "[ZOE_V1] texted: ...") -> tên nhân vật
+        # character tag inside narration (e.g. "[ZOE_V1] texted: ...") -> character name
         if not re.match(r"^\[[A-Z0-9_]+\]:", vo):
             vo = re.sub(r"\[([A-Z]+)\d*_V\d+\]", lambda mm: NAMES.get(mm.group(1), mm.group(1).title()), vo)
         out.append("Scene %s: %s" % (n, vo))
     open(a.out, "w", encoding="utf-8").write("\n".join(out) + "\n")
-    print("EXTRACT_OK %s · %d scene%s" % (a.out, len(out), (" · KHÔNG CÓ VO: " + ", ".join(miss)) if miss else ""))
+    print("EXTRACT_OK %s · %d scene%s" % (a.out, len(out), (" · NO VO: " + ", ".join(miss)) if miss else ""))
 
 
 def cmd_test(a):
-    """Kiểm tra nhanh trang web trên giả lập iPhone + Android (cần playwright + chromium)."""
+    """Quick check of the web page on emulated iPhone + Android (needs playwright + chromium)."""
     import http.server, threading, functools
     from playwright.sync_api import sync_playwright
     class Q(http.server.SimpleHTTPRequestHandler):
@@ -665,7 +665,7 @@ if __name__ == "__main__":
     p.add_argument("--yt", default=""); p.add_argument("--thumb"); p.add_argument("--question", default="")
     p.add_argument("--work", required=True)
     p = sub.add_parser("build"); p.add_argument("--work", required=True); p.add_argument("--site")
-    p.add_argument("--skip-tts", action="store_true", help="dùng lại giọng đọc đã tạo (khi chỉ sửa giao diện hoặc thay vài file)")
+    p.add_argument("--skip-tts", action="store_true", help="reuse generated voices (when only the layout or a few files changed)")
     p = sub.add_parser("extract"); p.add_argument("--prompts", required=True); p.add_argument("--out", required=True)
     p = sub.add_parser("test"); p.add_argument("--site", required=True); p.add_argument("--ep", type=int, required=True)
     a = ap.parse_args()

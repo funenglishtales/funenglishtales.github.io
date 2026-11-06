@@ -1,4 +1,4 @@
-"""Bọc trang Word Practice thành file HTML độc lập để đưa lên web (GitHub Pages / Netlify / Cloudflare Pages)."""
+"""Wrap a Word Practice page into a standalone HTML file for the web (GitHub Pages / Netlify / Cloudflare Pages)."""
 import sys, re, html
 src, out, desc = sys.argv[1], sys.argv[2], sys.argv[3]
 body = open(src, encoding="utf-8").read()
